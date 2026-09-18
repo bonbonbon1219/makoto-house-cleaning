@@ -1,0 +1,159 @@
+.section {
+  background: var(--contact-grad);
+  color: #fff;
+}
+
+.wrap {
+  display: grid;
+  gap: 3rem;
+}
+
+.kicker {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-display), sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent-mint);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(1.9rem, 4vw, 2.7rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.lead {
+  margin: 1rem 0 0;
+  max-width: 28rem;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.85;
+}
+
+.direct {
+  margin-top: 2.25rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.phone {
+  display: inline-block;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(1.7rem, 4vw, 2.35rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  transition: color 0.25s var(--ease);
+}
+
+.phone:hover {
+  color: var(--accent-mint);
+}
+
+.meta {
+  margin: 0.55rem 0 0;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.92rem;
+}
+
+.form {
+  display: grid;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+}
+
+.estimateNote {
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid rgba(159, 212, 203, 0.35);
+  background: rgba(159, 212, 203, 0.12);
+  color: var(--accent-mint);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.field span {
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.fieldHelp {
+  font-weight: 400 !important;
+  letter-spacing: 0.02em !important;
+  color: rgba(255, 255, 255, 0.55) !important;
+  font-size: 0.8rem !important;
+  line-height: 1.6;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.9rem 0.95rem;
+  color: #fff;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.field select option {
+  color: var(--ink);
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: 2px solid rgba(159, 212, 203, 0.55);
+  outline-offset: 1px;
+}
+
+.submit {
+  justify-self: start;
+  margin-top: 0.35rem;
+}
+
+.privacy {
+  margin: 0;
+  font-size: 0.84rem;
+  color: rgba(255, 255, 255, 0.58);
+  line-height: 1.7;
+}
+
+.privacy a {
+  color: var(--accent-mint);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.note {
+  margin: 0;
+  color: var(--accent-mint);
+  font-size: 0.92rem;
+}
+
+@media (min-width: 900px) {
+  .wrap {
+    grid-template-columns: 0.95fr 1.05fr;
+    align-items: start;
+    gap: 4.5rem;
+  }
+}

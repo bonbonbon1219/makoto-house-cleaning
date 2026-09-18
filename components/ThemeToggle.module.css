@@ -1,0 +1,44 @@
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.4rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--ui-border);
+  background: var(--ui-surface);
+  color: var(--ink);
+  cursor: pointer;
+  font-family: var(--font-display), sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition:
+    background 0.25s var(--ease),
+    border-color 0.25s var(--ease),
+    color 0.25s var(--ease);
+}
+
+.toggle:hover:not(:disabled) {
+  border-color: var(--teal);
+  color: var(--teal-deep);
+}
+
+.toggle:disabled {
+  opacity: 0.55;
+}
+
+.icon {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.text {
+  display: none;
+}
+
+@media (min-width: 720px) {
+  .text {
+    display: inline;
+  }
+}

@@ -1,0 +1,127 @@
+.page {
+  padding: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(5rem, 10vw, 7.5rem);
+  background: var(--fog);
+  min-height: calc(100svh - var(--header-h));
+}
+
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.65rem;
+  margin: 0 0 1.75rem;
+  padding: 0;
+  list-style: none;
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+}
+
+.breadcrumb li:not(:last-child)::after {
+  content: "/";
+  margin-left: 0.65rem;
+  color: rgba(15, 28, 31, 0.28);
+}
+
+.breadcrumb a:hover {
+  color: var(--teal-deep);
+}
+
+.header {
+  max-width: 44rem;
+  margin-bottom: 2rem;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(1.85rem, 4vw, 2.6rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+}
+
+.lead {
+  margin: 1rem 0 0;
+  color: var(--ink-soft);
+  line-height: 1.85;
+}
+
+.updated {
+  margin: 1rem 0 0;
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+}
+
+.article {
+  max-width: 44rem;
+  padding: clamp(1.5rem, 4vw, 2.25rem);
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+
+.article :global(h2) {
+  margin: 2rem 0 0.85rem;
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+
+.article :global(h2:first-child) {
+  margin-top: 0;
+}
+
+.article :global(p),
+.article :global(li) {
+  color: var(--ink-soft);
+  line-height: 1.9;
+}
+
+.article :global(p) {
+  margin: 0.75rem 0 0;
+}
+
+.article :global(ul) {
+  margin: 0.75rem 0 0;
+  padding-left: 1.2rem;
+}
+
+.article :global(table) {
+  width: 100%;
+  margin-top: 0.75rem;
+  border-collapse: collapse;
+  font-size: 0.96rem;
+}
+
+.article :global(th),
+.article :global(td) {
+  padding: 0.95rem 0.85rem;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.7;
+}
+
+.article :global(th) {
+  width: 34%;
+  color: var(--ink);
+  font-weight: 700;
+  background: var(--fog);
+}
+
+.article :global(td) {
+  color: var(--ink-soft);
+}
+
+.article :global(a) {
+  color: var(--teal-deep);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.note {
+  margin-top: 2rem !important;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.9rem;
+}

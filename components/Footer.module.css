@@ -1,0 +1,115 @@
+.footer {
+  padding: 3.25rem 0 2.75rem;
+  background: var(--footer-bg);
+  color: var(--footer-text);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.inner {
+  display: grid;
+  gap: 1.75rem;
+}
+
+.brandLink {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: fit-content;
+}
+
+.brandLink:hover .brandEn {
+  color: var(--accent-mint);
+}
+
+.logo {
+  width: 48px;
+  height: auto;
+  flex-shrink: 0;
+  filter: brightness(1.2);
+}
+
+.brandText {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.brandEn {
+  margin: 0;
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #fff;
+  transition: color 0.25s var(--ease);
+}
+
+.brandJa {
+  margin: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.tag {
+  margin: 0.9rem 0 0;
+  max-width: 22rem;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.meta {
+  font-size: 0.92rem;
+}
+
+.meta p {
+  margin: 0.35rem 0 0;
+}
+
+.meta a:hover {
+  color: var(--accent-mint);
+}
+
+.siteNav,
+.legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.15rem;
+  margin-top: 1.15rem;
+}
+
+.siteNav a,
+.legal a {
+  font-size: 0.86rem;
+  color: rgba(255, 255, 255, 0.7);
+  border-bottom: 1px solid transparent;
+  transition: color 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+
+.siteNav a:hover,
+.legal a:hover {
+  color: var(--accent-mint);
+  border-bottom-color: rgba(159, 212, 203, 0.55);
+}
+
+.copy {
+  margin-top: 1.1rem !important;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+@media (min-width: 720px) {
+  .inner {
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+  }
+
+  .meta {
+    text-align: right;
+  }
+
+  .siteNav,
+  .legal {
+    justify-content: flex-end;
+  }
+}

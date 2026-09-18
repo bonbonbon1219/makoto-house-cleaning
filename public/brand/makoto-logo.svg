@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none" role="img" aria-label="??????????">
+  <defs>
+    <linearGradient id="g" x1="16" y1="18" x2="112" y2="112" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2F6B8A"/>
+      <stop offset="1" stop-color="#6FB3D4"/>
+    </linearGradient>
+  </defs>
+
+  <!-- house -->
+  <path
+    stroke="url(#g)"
+    stroke-width="8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    d="M28 104 V60 L64 26 L100 60 V70"
+  />
+  <path
+    stroke="url(#g)"
+    stroke-width="8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    d="M28 104 H66"
+  />
+  <path
+    stroke="url(#g)"
+    stroke-width="8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    d="M42 44 V22 H54"
+  />
+
+  <!-- broom -->
+  <g transform="rotate(38 80 70)">
+    <rect x="75" y="16" width="11" height="56" rx="5.5" fill="url(#g)"/>
+    <rect x="71" y="68" width="19" height="8" rx="2" fill="url(#g)"/>
+    <path
+      fill="url(#g)"
+      d="M67 76 C67 76 65 88 65 98 C65 107 72 112 80.5 112 C89 112 96 107 96 98 C96 88 94 76 94 76 Z"
+    />
+    <g stroke="#1E4F68" stroke-width="2.6" stroke-linecap="round" opacity="0.85">
+      <path d="M70 97 V111"/>
+      <path d="M76 96 V113"/>
+      <path d="M82 95 V114"/>
+      <path d="M88 96 V113"/>
+      <path d="M93 97 V111"/>
+    </g>
+  </g>
+
+  <!-- sparkles (clear 4-point) -->
+  <path fill="url(#g)" d="M50 46 L54 56 L64.5 60 L54 64 L50 74 L46 64 L35.5 60 L46 56 Z"/>
+  <path fill="url(#g)" d="M69 34 L72 41.5 L79.5 44.5 L72 47.5 L69 55 L66 47.5 L58.5 44.5 L66 41.5 Z"/>
+  <path fill="url(#g)" d="M97 20 L100.5 28 L108.5 31.5 L100.5 35 L97 43 L93.5 35 L85.5 31.5 L93.5 28 Z"/>
+  <path fill="url(#g)" d="M111 42 L113 46.5 L117.5 48.5 L113 50.5 L111 55 L109 50.5 L104.5 48.5 L109 46.5 Z"/>
+</svg>
