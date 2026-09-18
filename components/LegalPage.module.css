@@ -21,8 +21,17 @@
   color: rgba(15, 28, 31, 0.28);
 }
 
-.breadcrumb a:hover {
+.breadcrumb a {
   color: var(--teal-deep);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgba(6, 79, 70, 0.35);
+}
+
+.breadcrumb a:hover {
+  color: var(--teal);
+  text-decoration-color: var(--teal);
 }
 
 .header {
@@ -117,6 +126,14 @@
   color: var(--teal-deep);
   text-decoration: underline;
   text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgba(6, 79, 70, 0.4);
+  font-weight: 500;
+}
+
+.article :global(a:hover) {
+  color: var(--teal);
+  text-decoration-color: var(--teal);
 }
 
 .note {

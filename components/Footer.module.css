@@ -66,10 +66,6 @@
   margin: 0.35rem 0 0;
 }
 
-.meta a:hover {
-  color: var(--accent-mint);
-}
-
 .siteNav,
 .legal {
   display: flex;
@@ -81,15 +77,31 @@
 .siteNav a,
 .legal a {
   font-size: 0.86rem;
-  color: rgba(255, 255, 255, 0.7);
-  border-bottom: 1px solid transparent;
-  transition: color 0.25s var(--ease), border-color 0.25s var(--ease);
+  color: rgba(255, 255, 255, 0.82);
+  text-decoration: underline;
+  text-decoration-color: rgba(159, 212, 203, 0.45);
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+  border-bottom: none;
+  transition: color 0.25s var(--ease), text-decoration-color 0.25s var(--ease);
 }
 
 .siteNav a:hover,
 .legal a:hover {
   color: var(--accent-mint);
-  border-bottom-color: rgba(159, 212, 203, 0.55);
+  text-decoration-color: rgba(159, 212, 203, 0.9);
+}
+
+.meta a {
+  color: rgba(255, 255, 255, 0.88);
+  text-decoration: underline;
+  text-decoration-color: rgba(159, 212, 203, 0.45);
+  text-underline-offset: 0.18em;
+}
+
+.meta a:hover {
+  color: var(--accent-mint);
+  text-decoration-color: rgba(159, 212, 203, 0.9);
 }
 
 .copy {
