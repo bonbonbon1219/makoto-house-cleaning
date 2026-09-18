@@ -14,7 +14,7 @@ const OTHER_AREA = "その他地域";
 export function Contact() {
   const [sent, setSent] = useState(false);
   const [service, setService] = useState("エアコン洗浄");
-  const [area, setArea] = useState(site.areas[0]);
+  const [area, setArea] = useState<string>(site.areas[0]);
   const [otherArea, setOtherArea] = useState("");
   const [message, setMessage] = useState("");
   const [estimateNote, setEstimateNote] = useState("");

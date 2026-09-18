@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { legalNav, site } from "@/lib/site";
+import { Share } from "./Share";
 import styles from "./Footer.module.css";
 
 const homeLinks = [
@@ -52,6 +53,7 @@ export function Footer() {
               </Link>
             ))}
           </nav>
+          <Share />
           <p className={styles.copy}>© {new Date().getFullYear()} {site.brandJa}</p>
         </div>
       </div>
