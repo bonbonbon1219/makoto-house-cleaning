@@ -50,17 +50,71 @@
 .nav {
   display: none;
   margin-left: auto;
-  gap: 1.2rem;
+  align-items: stretch;
+  gap: 0.2rem;
 }
 
 .navLink {
-  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.28rem;
+  min-width: 4.6rem;
+  padding: 0.35rem 0.55rem;
   color: var(--ink-soft);
+  position: relative;
   transition: color 0.25s var(--ease);
+}
+
+.navLink::after {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 0;
+  height: 2px;
+  background: var(--teal);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s var(--ease);
+}
+
+.iconWrap {
+  display: grid;
+  place-items: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  color: var(--teal);
+  opacity: 0.78;
+  transition: opacity 0.25s var(--ease), transform 0.35s var(--ease);
+}
+
+.icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  display: block;
+}
+
+.navLabel {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
 .navLink:hover {
   color: var(--teal-deep);
+}
+
+.navLink:hover .iconWrap {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.navLink:hover::after {
+  transform: scaleX(1);
 }
 
 .actions {
@@ -72,25 +126,51 @@
 
 .phone {
   display: none;
+  align-items: center;
+  gap: 0.4rem;
   font-family: var(--font-display), sans-serif;
   font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: 0.04em;
   color: var(--teal-deep);
+  transition: color 0.25s var(--ease);
+}
+
+.phoneIcon {
+  display: grid;
+  place-items: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  color: var(--teal);
+}
+
+.phone:hover {
+  color: var(--teal);
 }
 
 @media (min-width: 720px) {
   .phone {
-    display: inline;
+    display: inline-flex;
   }
 }
 
-@media (min-width: 900px) {
+@media (min-width: 980px) {
   .nav {
     display: flex;
   }
 
   .actions {
     margin-left: 0;
+  }
+}
+
+@media (min-width: 1100px) {
+  .navLink {
+    min-width: 5.1rem;
+    padding-inline: 0.7rem;
+  }
+
+  .navLabel {
+    font-size: 0.76rem;
   }
 }

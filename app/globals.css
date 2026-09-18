@@ -18,7 +18,7 @@
   --contact-grad: linear-gradient(135deg, #0c2422 0%, #123834 48%, #0a2c3a 100%);
   --radius: 0;
   --max: 1180px;
-  --header-h: 72px;
+  --header-h: 78px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --shadow-soft: 0 24px 60px rgba(15, 28, 31, 0.08);
   --ui-surface: #ffffff;
