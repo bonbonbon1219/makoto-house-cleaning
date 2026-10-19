@@ -54,9 +54,7 @@ const themeBootScript = `
 (function(){
   try {
     var saved = localStorage.getItem('makoto-theme');
-    var theme = saved === 'light' || saved === 'dark'
-      ? saved
-      : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    var theme = saved === 'dark' ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', theme);
     document.documentElement.style.colorScheme = theme;
   } catch (e) {}
@@ -69,7 +67,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" suppressHydrationWarning>
+    <html lang="ja" data-theme="light" suppressHydrationWarning>
       <body className={display.variable}>
         <Script id="theme-boot" strategy="beforeInteractive">
           {themeBootScript}

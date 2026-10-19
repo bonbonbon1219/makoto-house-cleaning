@@ -7,9 +7,7 @@ type Theme = "light" | "dark";
 
 function getPreferredTheme(): Theme {
   if (typeof window === "undefined") return "light";
-  const saved = window.localStorage.getItem("makoto-theme");
-  if (saved === "light" || saved === "dark") return saved;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  return window.localStorage.getItem("makoto-theme") === "dark" ? "dark" : "light";
 }
 
 function applyTheme(theme: Theme) {
