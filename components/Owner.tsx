@@ -11,7 +11,7 @@ export function Owner() {
           <h2 className="section-title">私たちが伺います｜{site.brandJa}の方針</h2>
           <p className="section-lead">
             ご自宅や店舗でのクリーニングを、代表を含むスタッフ{site.team.staffCount}
-            名で丁寧に行います。
+            名が丁寧に行います。
           </p>
         </div>
 
