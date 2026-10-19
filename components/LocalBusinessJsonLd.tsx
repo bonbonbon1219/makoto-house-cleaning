@@ -10,7 +10,7 @@ export function LocalBusinessJsonLd() {
       "福岡市を中心に、春日市・那珂川市・大野城市対応のエアコン洗浄・レンジフード分解洗浄・ハウスクリーニング",
     telephone: site.phone,
     ...(site.email ? { email: site.email } : {}),
-    url: "https://makoto-cleaning.example/",
+    url: "https://makoto-hk.com/",
     areaServed: site.areas.map((name) => ({
       "@type": "City",
       name,

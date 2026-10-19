@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://makoto-cleaning.example/sitemap.xml",
+    sitemap: "https://makoto-hk.com/sitemap.xml",
   };
 }
