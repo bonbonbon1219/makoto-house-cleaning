@@ -20,7 +20,7 @@ const body = Zen_Kaku_Gothic_New({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://makoto-cleaning.example"),
+  metadataBase: new URL("https://makoto-hk.com"),
   title: {
     default: `${site.brandJa}｜福岡市のエアコン・ハウスクリーニング`,
     template: `%s｜${site.brandJa}`,
