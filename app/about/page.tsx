@@ -6,7 +6,7 @@ import styles from "@/components/LegalPage.module.css";
 
 export const metadata: Metadata = {
   title: "会社概要",
-  description: `${site.brandFull}の会社概要です。福岡市・春日市・那珂川市・大野城市でエアコン洗浄・レンジフード分解洗浄・ハウスクリーニングを提供する事業者情報を掲載しています。`,
+  description: `${site.brandFull}の会社概要です。${site.areas.join("・")}でエアコン洗浄・レンジフード分解洗浄・ハウスクリーニングを提供する事業者情報を掲載しています。`,
   alternates: {
     canonical: "/about",
   },

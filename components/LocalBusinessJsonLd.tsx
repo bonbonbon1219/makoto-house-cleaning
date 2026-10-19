@@ -7,7 +7,7 @@ export function LocalBusinessJsonLd() {
     name: site.brandFull,
     alternateName: [site.brandEn, site.brandJa],
     description:
-      "福岡市を中心に、春日市・那珂川市・大野城市対応のエアコン洗浄・レンジフード分解洗浄・ハウスクリーニング",
+      `${site.areas.join("・")}対応のエアコン洗浄・レンジフード分解洗浄・ハウスクリーニング`,
     telephone: site.phone,
     ...(site.email ? { email: site.email } : {}),
     url: "https://makoto-hk.com/",

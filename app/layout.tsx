@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     template: `%s｜${site.brandJa}`,
   },
   description:
-    "福岡市・春日市・那珂川市・大野城市対応。キッチン換気扇の分解洗浄とエアコン洗浄を中心に、ハウスクリーニング一式をご提供します。",
+    "福岡市・春日市・那珂川市・大野城市・太宰府市・筑紫野市・糸島市対応。キッチン換気扇の分解洗浄とエアコン洗浄を中心に、ハウスクリーニング一式をご提供します。",
   openGraph: {
     title: `${site.brandJa}｜福岡のハウスクリーニング`,
     description:

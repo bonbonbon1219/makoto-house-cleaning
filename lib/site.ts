@@ -6,7 +6,7 @@ export const site = {
   phone: "070-7480-0510",
   phoneTel: "07074800510",
   email: "info@makoto-hk.com",
-  areas: ["福岡市", "春日市", "那珂川市", "大野城市"],
+  areas: ["福岡市", "春日市", "那珂川市", "大野城市", "太宰府市", "筑紫野市", "糸島市"],
   hours: "受付 9:00–18:00（年中無休・要予約）",
   legal: {
     operator: "真（Makoto）ハウスクリーニング",
@@ -18,12 +18,12 @@ export const site = {
     payment: "現金・振込",
     delivery: "ご予約確定後、ご希望日時に訪問し作業を実施します。",
     cancel:
-      "お客様都合のキャンセルは、作業日の3日前までは無料、前日は予約金額の50％、当日・無断キャンセルは100％を申し受けます。天災等やむを得ない事由の場合はご相談ください。役務提供後の返品・返金はお受けできません。",
+      "キャンセル料は、作業当日の無断キャンセルのみ予約金額の100％とします。事前のご連絡によるキャンセルは無料です。天災等やむを得ない事由の場合はご相談ください。役務提供後の返品・返金はお受けできません。",
     returns: "",
     extraFees: "特になし",
     business:
       "エアコン洗浄（壁掛け・お掃除機能付き・業務用天井埋め込み）、レンジフード・換気扇分解洗浄、浴室・トイレ・キッチン等のハウスクリーニング、飲食店などの換気口、油汚れ洗浄",
-    updatedAt: "2026年10月19日",
+    updatedAt: "2026年10月20日",
   },
 } as const;
 
@@ -46,7 +46,7 @@ export const featuredServices = [
     title: "エアコン洗浄",
     href: "/services/aircon-cleaning",
     lead: "壁掛けから業務用の天井埋め込み式まで、高圧洗浄でカビ・ホコリを除去します。",
-    points: ["壁掛け 9,000円／２台目〜7,000円", "お掃除機能付き・業務用にも対応", "天井埋め込み（業務用）"],
+    points: ["壁掛け 8,800円／２台目〜7,000円", "お掃除機能付き・業務用にも対応", "天井埋め込み（業務用）"],
   },
 ] as const;
 
@@ -81,40 +81,40 @@ export const allServices = [
 export const pricing = [
   {
     name: "壁掛けエアコン（通常）",
-    price: "9,000円",
+    price: "8,800円",
     secondary: "２台目〜7,000円",
     note: "税込",
   },
   {
     name: "お掃除機能付きエアコン",
-    price: "25,000円〜",
+    price: "16,500円〜",
     note: "税込",
   },
   {
     name: "業務用天井埋め込み式エアコン",
-    price: "25,000円〜",
+    price: "22,000円〜",
     note: "税込",
   },
   {
     name: "キッチン全体",
-    price: "18,000円〜",
+    price: "16,500円〜",
     secondary: "レンジフード・換気扇分解洗浄を含む",
     note: "税込",
   },
   {
     name: "レンジフード・換気扇分解洗浄",
-    price: "11,000円〜",
+    price: "9,900円〜",
     secondary: "単品の場合、キッチン全体は含まれません",
     note: "税込",
   },
   {
     name: "浴室クリーニング",
-    price: "14,500円〜",
+    price: "13,200円〜",
     note: "税込",
   },
   {
     name: "トイレクリーニング",
-    price: "6,000円〜",
+    price: "5,500円〜",
     note: "税込",
   },
 ] as const;
@@ -124,65 +124,65 @@ export const estimateItems = [
   {
     id: "wall-ac",
     name: "壁掛けエアコン（通常）",
-    unitPrice: 9000,
+    unitPrice: 8800,
     pricingType: "wallAc" as const,
-    hint: "1台目9,000円／2台目〜7,000円",
+    hint: "1台目8,800円／2台目〜7,000円",
     group: "default" as const,
   },
   {
     id: "auto-ac",
     name: "お掃除機能付きエアコン",
-    unitPrice: 25000,
+    unitPrice: 16500,
     pricingType: "flat" as const,
-    hint: "25,000円〜／台",
+    hint: "16,500円〜／台",
     group: "default" as const,
   },
   {
     id: "ceiling-ac",
     name: "業務用天井埋め込み式エアコン",
-    unitPrice: 25000,
+    unitPrice: 22000,
     pricingType: "flat" as const,
-    hint: "25,000円〜／台",
+    hint: "22,000円〜／台",
     group: "default" as const,
   },
   {
     id: "kitchen",
     name: "キッチン全体",
-    unitPrice: 18000,
+    unitPrice: 16500,
     pricingType: "flat" as const,
-    hint: "18,000円〜（レンジフード・換気扇分解洗浄を含む）",
+    hint: "16,500円〜（レンジフード・換気扇分解洗浄を含む）",
     group: "kitchen" as const,
     role: "parent" as const,
   },
   {
     id: "range-hood",
     name: "レンジフード・換気扇分解洗浄",
-    unitPrice: 11000,
+    unitPrice: 9900,
     pricingType: "flat" as const,
-    hint: "11,000円〜（単品の場合、キッチン全体は含まれません）",
+    hint: "9,900円〜（単品の場合、キッチン全体は含まれません）",
     group: "kitchen" as const,
     role: "child" as const,
   },
   {
     id: "bath",
     name: "浴室クリーニング",
-    unitPrice: 14500,
+    unitPrice: 13200,
     pricingType: "flat" as const,
-    hint: "14,500円〜",
+    hint: "13,200円〜",
     group: "default" as const,
   },
   {
     id: "toilet",
     name: "トイレクリーニング",
-    unitPrice: 6000,
+    unitPrice: 5500,
     pricingType: "flat" as const,
-    hint: "6,000円〜",
+    hint: "5,500円〜",
     group: "default" as const,
   },
 ] as const;
 
 export const estimateRules = {
-  wallAcFirst: 9000,
+  wallAcFirst: 8800,
   wallAcExtra: 7000,
   setDiscountTwo: 2000,
   setDiscountThreePlus: 5000,
@@ -194,7 +194,7 @@ export function calcWallAcTotal(qty: number) {
 }
 
 export function calcSetDiscount(totalSets: number, hasNonWallAc: boolean) {
-  // 壁掛けエアコンのみの場合は台割（9,000/7,000）を適用済みのためセット割なし
+  // 壁掛けエアコンのみの場合は台割（8,800/7,000）を適用済みのためセット割なし
   if (!hasNonWallAc) return 0;
   if (totalSets >= 3) return estimateRules.setDiscountThreePlus;
   if (totalSets >= 2) return estimateRules.setDiscountTwo;
