@@ -10,6 +10,21 @@ import {
 import styles from "./Contact.module.css";
 
 const OTHER_AREA = "その他地域";
+const MAX_PHOTOS = 3;
+const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
+const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
+const ALLOWED_EXT = /\.(jpe?g|png|webp)$/i;
+
+type PhotoItem = {
+  id: string;
+  file: File;
+  previewUrl: string;
+};
+
+function isAllowedPhoto(file: File) {
+  if (file.type && ALLOWED_TYPES.has(file.type)) return true;
+  return ALLOWED_EXT.test(file.name);
+}
 
 export function Contact() {
   const [sent, setSent] = useState(false);
@@ -21,11 +36,25 @@ export function Contact() {
   const [otherArea, setOtherArea] = useState("");
   const [message, setMessage] = useState("");
   const [estimateNote, setEstimateNote] = useState("");
+  const [photos, setPhotos] = useState<PhotoItem[]>([]);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const photosRef = useRef<PhotoItem[]>([]);
   const titleId = useId();
   const descId = useId();
+  const photosHelpId = useId();
 
   const needsOtherArea = area === OTHER_AREA;
+
+  useEffect(() => {
+    photosRef.current = photos;
+  }, [photos]);
+
+  useEffect(() => {
+    return () => {
+      photosRef.current.forEach((item) => URL.revokeObjectURL(item.previewUrl));
+    };
+  }, []);
 
   useEffect(() => {
     function applyDraft(draft: EstimateDraft | null) {
@@ -64,6 +93,60 @@ export function Contact() {
     };
   }, [showThanks]);
 
+  function clearPhotos() {
+    setPhotos((current) => {
+      current.forEach((item) => URL.revokeObjectURL(item.previewUrl));
+      return [];
+    });
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  function removePhoto(id: string) {
+    setPhotos((current) => {
+      const target = current.find((item) => item.id === id);
+      if (target) URL.revokeObjectURL(target.previewUrl);
+      return current.filter((item) => item.id !== id);
+    });
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  function onPhotosSelected(fileList: FileList | null) {
+    if (!fileList?.length) return;
+
+    setError("");
+    const incoming = Array.from(fileList);
+    const next: PhotoItem[] = [];
+    let rejected = false;
+
+    for (const file of incoming) {
+      if (photos.length + next.length >= MAX_PHOTOS) {
+        rejected = true;
+        break;
+      }
+
+      if (!isAllowedPhoto(file) || file.size > MAX_PHOTO_BYTES) {
+        rejected = true;
+        continue;
+      }
+
+      next.push({
+        id: `${file.name}-${file.size}-${file.lastModified}-${Math.random().toString(36).slice(2, 8)}`,
+        file,
+        previewUrl: URL.createObjectURL(file),
+      });
+    }
+
+    if (next.length) {
+      setPhotos((current) => [...current, ...next].slice(0, MAX_PHOTOS));
+    }
+
+    if (rejected || incoming.length > next.length) {
+      setError("写真は jpg / png / webp のみ、各5MBまで、最大3枚までです。");
+    }
+
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSending(true);
@@ -72,21 +155,21 @@ export function Contact() {
     setError("");
 
     const form = event.currentTarget;
-    const data = new FormData(form);
+    const fields = new FormData(form);
+    const payload = new FormData();
+    payload.set("name", String(fields.get("name") ?? ""));
+    payload.set("phone", String(fields.get("phone") ?? ""));
+    payload.set("email", String(fields.get("email") ?? ""));
+    payload.set("area", area);
+    payload.set("otherArea", otherArea);
+    payload.set("service", service);
+    payload.set("message", message);
+    photos.forEach((item) => payload.append("photos", item.file, item.file.name));
 
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: String(data.get("name") ?? ""),
-          phone: String(data.get("phone") ?? ""),
-          email: String(data.get("email") ?? ""),
-          area,
-          otherArea,
-          service,
-          message,
-        }),
+        body: payload,
       });
 
       const result = (await response.json()) as { ok?: boolean; error?: string };
@@ -94,6 +177,12 @@ export function Contact() {
       if (!response.ok || !result.ok) {
         if (result.error === "mail_not_configured") {
           setError("メール送信の準備がまだ完了していません。お電話またはメールで直接ご連絡ください。");
+        } else if (
+          result.error === "invalid_image_type" ||
+          result.error === "image_too_large" ||
+          result.error === "too_many_images"
+        ) {
+          setError("写真は jpg / png / webp のみ、各5MBまで、最大3枚までです。");
         } else {
           setError("送信に失敗しました。時間をおいて再度お試しいただくか、お電話・メールでご連絡ください。");
         }
@@ -105,6 +194,7 @@ export function Contact() {
       form.reset();
       setOtherArea("");
       setEstimateNote("");
+      clearPhotos();
     } catch {
       setError("送信に失敗しました。通信環境をご確認のうえ、再度お試しください。");
     } finally {
@@ -120,6 +210,7 @@ export function Contact() {
           <h2 className={styles.title}>お問い合わせ</h2>
           <p className={styles.lead}>
             まずはお気軽にどうぞ。メニュー・台数・ご希望日が分かるとスムーズです。
+            エアコンの型番や汚れ箇所の写真があると、よりスムーズにご案内できます。
           </p>
 
           <div className={styles.direct}>
@@ -219,6 +310,58 @@ export function Contact() {
               disabled={sending}
             />
           </label>
+
+          <div className={styles.field}>
+            <span id={photosHelpId}>写真（任意）</span>
+            <p className={styles.fieldHelp}>
+              エアコンのメーカー・型番シールや、クリーニング箇所の写真があるとスムーズです。jpg / png /
+              webp、各5MBまで、最大{MAX_PHOTOS}枚。
+            </p>
+            <div className={styles.photoActions}>
+              <label className={styles.photoPicker}>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+                  multiple
+                  disabled={sending || photos.length >= MAX_PHOTOS}
+                  aria-describedby={photosHelpId}
+                  onChange={(event) => onPhotosSelected(event.target.files)}
+                />
+                写真を選ぶ
+              </label>
+              {photos.length > 0 ? (
+                <button
+                  type="button"
+                  className={styles.photoClear}
+                  onClick={clearPhotos}
+                  disabled={sending}
+                >
+                  すべて削除
+                </button>
+              ) : null}
+            </div>
+
+            {photos.length > 0 ? (
+              <ul className={styles.photoList}>
+                {photos.map((item) => (
+                  <li key={item.id} className={styles.photoItem}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={item.previewUrl} alt="" className={styles.photoThumb} />
+                    <button
+                      type="button"
+                      className={styles.photoRemove}
+                      onClick={() => removePhoto(item.id)}
+                      disabled={sending}
+                      aria-label={`${item.file.name}を削除`}
+                    >
+                      削除
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
 
           <button
             type="submit"

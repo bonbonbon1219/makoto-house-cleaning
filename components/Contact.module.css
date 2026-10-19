@@ -122,6 +122,105 @@
   line-height: 1.6;
 }
 
+.photoActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.photoPicker {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.7rem 1.1rem;
+  border: 1px solid rgba(159, 212, 203, 0.45);
+  background: rgba(159, 212, 203, 0.12);
+  color: #fff;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.photoPicker:has(input:disabled) {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.photoPicker input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: inherit;
+}
+
+.photoClear {
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.86rem;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  cursor: pointer;
+}
+
+.photoClear:hover {
+  color: #fff;
+}
+
+.photoClear:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.photoList {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 0.35rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.photoItem {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.photoThumb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photoRemove {
+  position: absolute;
+  right: 0.35rem;
+  bottom: 0.35rem;
+  border: 0;
+  padding: 0.28rem 0.45rem;
+  background: rgba(7, 16, 18, 0.78);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.photoRemove:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 .field input,
 .field select,
 .field textarea {
