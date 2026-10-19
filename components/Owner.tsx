@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { site } from "@/lib/site";
-import { OptimizedImage } from "@/components/OptimizedImage";
 import styles from "./Owner.module.css";
 
 export function Owner() {
@@ -11,26 +10,10 @@ export function Owner() {
           <p className="section-kicker">About</p>
           <h2 className="section-title">私たちが伺います｜{site.brandJa}の方針</h2>
           <p className="section-lead">
-            ハウスクリーニングは、ご自宅や店舗にお伺いするサービスです。代表を含む作業者4名（男性2名・女性2名）で対応します。
+            ご自宅や店舗でのクリーニングを、代表を含むスタッフ{site.team.staffCount}
+            名で丁寧に行います。
           </p>
         </div>
-
-        <ul className={styles.team}>
-          {site.team.members.map((member) => (
-            <li key={member.id} className={styles.member}>
-              <div className={styles.portrait}>
-                <OptimizedImage
-                  src={member.src}
-                  alt={member.label}
-                  width={220}
-                  height={220}
-                  className={styles.photo}
-                />
-              </div>
-              <p className={styles.memberLabel}>{member.label}</p>
-            </li>
-          ))}
-        </ul>
 
         <div className={styles.panel}>
           <p className={styles.greeting}>{site.team.greeting}</p>

@@ -12,18 +12,12 @@ export const site = {
   team: {
     staffCount: 4,
     greeting:
-      "見知らぬ業者を家に入れるのは不安だと思います。だからこそ、作業前後の状態確認と、料金の事前説明を大切にしています。代表を含む作業者4名（男性2名・女性2名）で伺います。",
+      "作業前後の状態確認と、料金の事前説明を大切にしています。代表を含むスタッフ4名で、丁寧に対応します。",
     points: [
       "エアコン・レンジフードの分解洗浄を中心に対応",
       "見えにくい内部まで丁寧に洗い上げる方針",
       "税込料金を明示し、変更時は作業前にご説明",
       "福岡市周辺を中心に、地域密着で伺います",
-    ],
-    members: [
-      { id: "man-1", label: "作業スタッフ（男性）", src: "/team/staff-man-1.webp" },
-      { id: "man-2", label: "作業スタッフ（男性）", src: "/team/staff-man-2.webp" },
-      { id: "woman-1", label: "作業スタッフ（女性）", src: "/team/staff-woman-1.webp" },
-      { id: "woman-2", label: "作業スタッフ（女性）", src: "/team/staff-woman-2.webp" },
     ],
   },
   legal: {
