@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/lib/site";
+import { OptimizedImage } from "@/components/OptimizedImage";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import styles from "./Header.module.css";
 
@@ -17,8 +17,8 @@ export function Header() {
     <header className={styles.header}>
       <div className={`container ${styles.inner}`}>
         <Link href="/" className={styles.brand} aria-label={`${site.brandJa} ホーム`}>
-          <Image
-            src="/brand/makoto-logo.png"
+          <OptimizedImage
+            src="/brand/makoto-logo.webp"
             alt=""
             width={44}
             height={32}

@@ -1,13 +1,13 @@
-import Image from "next/image";
 import { site } from "@/lib/site";
+import { OptimizedImage } from "@/components/OptimizedImage";
 import styles from "./Hero.module.css";
 
 export function Hero() {
   return (
     <section className={styles.hero} aria-labelledby="hero-brand">
       <div className={styles.media} aria-hidden="true">
-        <Image
-          src="/hero-kitchen.jpg"
+        <OptimizedImage
+          src="/hero-kitchen.webp"
           alt=""
           fill
           priority

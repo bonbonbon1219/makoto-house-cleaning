@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { Outfit, Zen_Kaku_Gothic_New } from "next/font/google";
+import { Outfit } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { BackToTop } from "@/components/BackToTop";
@@ -10,13 +10,9 @@ import "./globals.css";
 const display = Outfit({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["500", "600", "700"],
-});
-
-const body = Zen_Kaku_Gothic_New({
-  subsets: ["latin"],
-  variable: "--font-body",
-  weight: ["400", "500", "700"],
+  weight: ["600", "700"],
+  display: "swap",
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -74,7 +70,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja" suppressHydrationWarning>
-      <body className={`${display.variable} ${body.variable}`}>
+      <body className={display.variable}>
         <Script id="theme-boot" strategy="beforeInteractive">
           {themeBootScript}
         </Script>

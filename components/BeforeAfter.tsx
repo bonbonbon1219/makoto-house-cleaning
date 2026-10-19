@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { beforeAfter } from "@/lib/site";
+import { OptimizedImage } from "@/components/OptimizedImage";
 import styles from "./BeforeAfter.module.css";
 
 export function BeforeAfter() {
@@ -24,11 +24,11 @@ export function BeforeAfter() {
               <div className={styles.compare}>
                 <figure className={styles.figure}>
                   <div className={styles.frame}>
-                    <Image
+                    <OptimizedImage
                       src={item.before}
                       alt={`${item.title}のビフォー`}
                       fill
-                      sizes="(max-width: 800px) 100vw, 45vw"
+                      sizes="(max-width: 800px) 92vw, 42vw"
                       className={styles.image}
                     />
                     <span className={styles.badge}>Before</span>
@@ -36,11 +36,11 @@ export function BeforeAfter() {
                 </figure>
                 <figure className={styles.figure}>
                   <div className={styles.frame}>
-                    <Image
+                    <OptimizedImage
                       src={item.after}
                       alt={`${item.title}のアフター`}
                       fill
-                      sizes="(max-width: 800px) 100vw, 45vw"
+                      sizes="(max-width: 800px) 92vw, 42vw"
                       className={styles.image}
                     />
                     <span className={`${styles.badge} ${styles.badgeAfter}`}>After</span>

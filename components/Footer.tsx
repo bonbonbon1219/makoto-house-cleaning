@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { legalNav, site } from "@/lib/site";
+import { OptimizedImage } from "@/components/OptimizedImage";
 import { Share } from "./Share";
 import styles from "./Footer.module.css";
 
@@ -17,8 +17,8 @@ export function Footer() {
       <div className={`container ${styles.inner}`}>
         <div>
           <Link href="/" className={styles.brandLink} aria-label={`${site.brandJa} トップページへ`}>
-            <Image
-              src="/brand/makoto-logo.png"
+            <OptimizedImage
+              src="/brand/makoto-logo.webp"
               alt=""
               width={48}
               height={35}
