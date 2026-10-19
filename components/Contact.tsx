@@ -7,6 +7,7 @@ import {
   type EstimateDraft,
   readEstimateDraft,
 } from "@/lib/estimateHandoff";
+import { compressImageForUpload, UPLOAD_MAX_BYTES } from "@/lib/compressImage";
 import styles from "./Contact.module.css";
 
 const OTHER_AREA = "その他地域";
@@ -21,9 +22,42 @@ type PhotoItem = {
   previewUrl: string;
 };
 
+type ApiResult = { ok?: boolean; error?: string };
+
 function isAllowedPhoto(file: File) {
   if (file.type && ALLOWED_TYPES.has(file.type)) return true;
   return ALLOWED_EXT.test(file.name);
+}
+
+function makeReference() {
+  const stamp = Date.now().toString(36).toUpperCase();
+  const rand = Math.random().toString(36).slice(2, 6).toUpperCase();
+  return `${stamp}-${rand}`;
+}
+
+async function postContact(payload: FormData): Promise<{ ok: boolean; error?: string; status: number }> {
+  const response = await fetch("/api/contact", {
+    method: "POST",
+    body: payload,
+  });
+
+  const raw = await response.text();
+  let result: ApiResult = {};
+  try {
+    result = JSON.parse(raw) as ApiResult;
+  } catch {
+    return {
+      ok: false,
+      error: response.status === 403 || raw.includes("403") ? "upload_blocked" : "invalid_response",
+      status: response.status,
+    };
+  }
+
+  if (!response.ok || !result.ok) {
+    return { ok: false, error: result.error || "send_failed", status: response.status };
+  }
+
+  return { ok: true, status: response.status };
 }
 
 export function Contact() {
@@ -37,6 +71,7 @@ export function Contact() {
   const [message, setMessage] = useState("");
   const [estimateNote, setEstimateNote] = useState("");
   const [photos, setPhotos] = useState<PhotoItem[]>([]);
+  const [thanksDetail, setThanksDetail] = useState("");
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const photosRef = useRef<PhotoItem[]>([]);
@@ -147,50 +182,101 @@ export function Contact() {
     if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
+  function errorMessage(code?: string) {
+    if (code === "mail_not_configured") {
+      return "メール送信の準備がまだ完了していません。お電話またはメールで直接ご連絡ください。";
+    }
+    if (
+      code === "invalid_image_type" ||
+      code === "image_too_large" ||
+      code === "too_many_images" ||
+      code === "upload_blocked"
+    ) {
+      return "写真の送信に失敗しました。文字だけでも送信できます。写真はメール（info@makoto-hk.com）へ直接お送りください。";
+    }
+    return "送信に失敗しました。時間をおいて再度お試しいただくか、お電話・メールでご連絡ください。";
+  }
+
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSending(true);
     setSent(false);
     setShowThanks(false);
     setError("");
+    setThanksDetail("");
 
     const form = event.currentTarget;
     const fields = new FormData(form);
-    const payload = new FormData();
-    payload.set("name", String(fields.get("name") ?? ""));
-    payload.set("phone", String(fields.get("phone") ?? ""));
-    payload.set("email", String(fields.get("email") ?? ""));
-    payload.set("area", area);
-    payload.set("otherArea", otherArea);
-    payload.set("service", service);
-    payload.set("message", message);
-    photos.forEach((item) => payload.append("photos", item.file, item.file.name));
+    const name = String(fields.get("name") ?? "");
+    const phone = String(fields.get("phone") ?? "");
+    const email = String(fields.get("email") ?? "");
+    const reference = makeReference();
 
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        body: payload,
-      });
-
-      const result = (await response.json()) as { ok?: boolean; error?: string };
-
-      if (!response.ok || !result.ok) {
-        if (result.error === "mail_not_configured") {
-          setError("メール送信の準備がまだ完了していません。お電話またはメールで直接ご連絡ください。");
-        } else if (
-          result.error === "invalid_image_type" ||
-          result.error === "image_too_large" ||
-          result.error === "too_many_images"
-        ) {
-          setError("写真は jpg / png / webp のみ、各5MBまで、最大3枚までです。");
-        } else {
-          setError("送信に失敗しました。時間をおいて再度お試しいただくか、お電話・メールでご連絡ください。");
+      let compressed: File[] = [];
+      if (photos.length) {
+        try {
+          compressed = await Promise.all(
+            photos.map((item) => compressImageForUpload(item.file, UPLOAD_MAX_BYTES)),
+          );
+        } catch {
+          setError("写真の処理に失敗しました。別の画像でお試しいただくか、メールで直接お送りください。");
+          return;
         }
+      }
+
+      const main = new FormData();
+      main.set("name", name);
+      main.set("phone", phone);
+      main.set("email", email);
+      main.set("area", area);
+      main.set("otherArea", otherArea);
+      main.set("service", service);
+      main.set("message", message);
+      main.set("reference", reference);
+      main.set("photoCount", String(compressed.length));
+
+      const mainResult = await postContact(main);
+      if (!mainResult.ok) {
+        setError(errorMessage(mainResult.error));
         return;
+      }
+
+      let photosSent = 0;
+      for (const [index, file] of compressed.entries()) {
+        const photoPayload = new FormData();
+        photoPayload.set("name", name);
+        photoPayload.set("phone", phone);
+        photoPayload.set("email", email);
+        photoPayload.set("area", area);
+        photoPayload.set("otherArea", otherArea);
+        photoPayload.set("service", service);
+        photoPayload.set("reference", reference);
+        photoPayload.set("photoFollowUp", "1");
+        photoPayload.set(
+          "message",
+          `【写真 ${index + 1}/${compressed.length}】お問い合わせ番号 ${reference}`,
+        );
+        photoPayload.append("photos", file, file.name || `photo-${index + 1}.jpg`);
+
+        const photoResult = await postContact(photoPayload);
+        if (photoResult.ok) {
+          photosSent += 1;
+        }
       }
 
       setSent(true);
       setShowThanks(true);
+      if (compressed.length && photosSent < compressed.length) {
+        setThanksDetail(
+          `お問い合わせは届きましたが、写真は ${photosSent}/${compressed.length} 枚のみ送信できました。残りの写真は ${site.email} へ直接お送りください。`,
+        );
+      } else if (compressed.length) {
+        setThanksDetail(`写真 ${photosSent} 枚もあわせて送信しました。`);
+      } else {
+        setThanksDetail("");
+      }
+
       form.reset();
       setOtherArea("");
       setEstimateNote("");
@@ -315,7 +401,7 @@ export function Contact() {
             <span id={photosHelpId}>写真（任意）</span>
             <p className={styles.fieldHelp}>
               エアコンのメーカー・型番シールや、クリーニング箇所の写真があるとスムーズです。jpg / png /
-              webp、各5MBまで、最大{MAX_PHOTOS}枚。
+              webp、最大{MAX_PHOTOS}枚。送信時に自動で軽量化します。
             </p>
             <div className={styles.photoActions}>
               <label className={styles.photoPicker}>
@@ -398,6 +484,13 @@ export function Contact() {
             </h3>
             <p id={descId} className={styles.modalText}>
               正常に送信できました。内容を確認のうえ、ご連絡いたします。
+              {thanksDetail ? (
+                <>
+                  <br />
+                  <br />
+                  {thanksDetail}
+                </>
+              ) : null}
             </p>
             <button
               ref={closeButtonRef}

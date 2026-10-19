@@ -4,8 +4,8 @@ import { site } from "@/lib/site";
 
 export const runtime = "nodejs";
 
-const MAX_IMAGES = 3;
-const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+const MAX_IMAGES = 1; // photos are sent one-by-one (CDN body limit)
+const MAX_IMAGE_BYTES = 100 * 1024;
 
 const ALLOWED_EXT = new Set([".jpg", ".jpeg", ".png", ".webp"]);
 const ALLOWED_MIME = new Set(["image/jpeg", "image/png", "image/webp"]);
@@ -140,6 +140,9 @@ export async function POST(request: Request) {
   const otherArea = String(formData.get("otherArea") ?? "").trim();
   const service = String(formData.get("service") ?? "").trim();
   const message = String(formData.get("message") ?? "").trim();
+  const reference = String(formData.get("reference") ?? "").trim();
+  const photoFollowUp = String(formData.get("photoFollowUp") ?? "").trim() === "1";
+  const photoCount = String(formData.get("photoCount") ?? "").trim();
 
   if (!name || !phone || !email || !area || !service) {
     return NextResponse.json({ ok: false, error: "missing_fields" }, { status: 400 });
@@ -164,11 +167,16 @@ export async function POST(request: Request) {
   const imageNote =
     parsedImages.images.length > 0
       ? `添付写真: ${parsedImages.images.length}枚`
-      : "添付写真: なし";
+      : photoFollowUp
+        ? "添付写真: あり"
+        : photoCount && photoCount !== "0"
+          ? `添付写真: 別メールで${photoCount}枚送信予定`
+          : "添付写真: なし";
 
   const text = [
-    "ホームページお問い合わせ",
+    photoFollowUp ? "ホームページお問い合わせ（写真）" : "ホームページお問い合わせ",
     "",
+    reference ? `お問い合わせ番号: ${reference}` : null,
     `お名前: ${name}`,
     `電話番号: ${phone}`,
     `メール: ${email}`,
@@ -178,7 +186,13 @@ export async function POST(request: Request) {
     "",
     "メッセージ:",
     message || "（なし）",
-  ].join("\n");
+  ]
+    .filter((line): line is string => line !== null)
+    .join("\n");
+
+  const subject = photoFollowUp
+    ? `【お問い合わせ写真】${service} / ${name}様${reference ? ` / ${reference}` : ""}`
+    : `【お問い合わせ】${service} / ${name}様${reference ? ` / ${reference}` : ""}`;
 
   try {
     const transporter = nodemailer.createTransport({
@@ -195,7 +209,7 @@ export async function POST(request: Request) {
       from: `"${site.brandJa}" <${smtpUser}>`,
       to: mailTo,
       replyTo: email,
-      subject: `【お問い合わせ】${service} / ${name}様`,
+      subject,
       text,
       attachments: parsedImages.images.map((image) => ({
         filename: image.filename,
