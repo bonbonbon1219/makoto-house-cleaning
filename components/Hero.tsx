@@ -24,11 +24,17 @@ export function Hero() {
           <span className={styles.brandJa}>{site.brandJa}</span>
         </p>
         <h1 className={styles.title}>
-          換気扇も、エアコンも。
-          <br />
-          中まで、きちんと。
+          <span className={styles.titleSeo}>福岡市周辺のエアコン・ハウスクリーニング</span>
+          <span className={styles.titleCatch}>
+            換気扇も、エアコンも。
+            <br />
+            中まで、きちんと。
+          </span>
         </h1>
-        <p className={styles.lead}>{site.tagline}</p>
+        <p className={styles.lead}>
+          {site.tagline}
+          福岡市7区・春日市・那珂川市・大野城市・太宰府市・筑紫野市・糸島市に対応します。
+        </p>
         <div className={styles.actions}>
           <a href={`tel:${site.phoneTel}`} className="btn btn-primary">
             電話で相談する {site.phone}

@@ -8,9 +8,9 @@ export function BeforeAfter() {
       <div className="container">
         <div className="section-head">
           <p className="section-kicker">Before / After</p>
-          <h2 className="section-title">洗浄のちがい、一目で。</h2>
+          <h2 className="section-title">エアコン・換気扇クリーニングのビフォーアフター</h2>
           <p className="section-lead">
-            洗浄前後のイメージです。実際の仕上がりは機種・汚れ具合により異なります。
+            洗浄前後のイメージです。実際の仕上がりは機種・汚れ具合により異なります。実写真へ順次差し替え予定です。
           </p>
         </div>
 

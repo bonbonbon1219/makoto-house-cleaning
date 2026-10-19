@@ -6,6 +6,7 @@ import { Services } from "@/components/Services";
 import { Pricing } from "@/components/Pricing";
 import { Estimate } from "@/components/Estimate";
 import { Area } from "@/components/Area";
+import { Owner } from "@/components/Owner";
 import { Flow } from "@/components/Flow";
 import { Faq } from "@/components/Faq";
 import { Contact } from "@/components/Contact";
@@ -23,6 +24,7 @@ export default function HomePage() {
       <Pricing />
       <Estimate />
       <Area />
+      <Owner />
       <Flow />
       <Faq />
       <Contact />

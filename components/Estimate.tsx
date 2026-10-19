@@ -202,7 +202,7 @@ export function Estimate() {
       <div className="container">
         <div className="section-head">
           <p className="section-kicker">Estimate</p>
-          <h2 className="section-title">かんたん自動見積</h2>
+          <h2 className="section-title">エアコン・ハウスクリーニングのかんたん自動見積</h2>
           <p className="section-lead">
             台数・件数を選ぶと料金が出ます。キッチン全体にはレンジフード・換気扇分解洗浄が含まれます。壁掛けエアコン（通常）は2台目以降7,000円です。
           </p>

@@ -10,7 +10,7 @@ export function Faq() {
       <div className="container">
         <div className="section-head">
           <p className="section-kicker">FAQ</p>
-          <h2 className="section-title">よくある質問</h2>
+          <h2 className="section-title">エアコンクリーニング・掃除のよくある質問</h2>
           <p className="section-lead">
             作業前によくいただくご質問です。不明点はお気軽にお問い合わせください。
             サービス詳細は

@@ -293,9 +293,9 @@ export function Contact() {
       <div className={`container ${styles.wrap}`}>
         <div className={styles.copy}>
           <p className={styles.kicker}>Contact</p>
-          <h2 className={styles.title}>お問い合わせ</h2>
+          <h2 className={styles.title}>お問い合わせ・無料相談</h2>
           <p className={styles.lead}>
-            まずはお気軽にどうぞ。メニュー・台数・ご希望日が分かるとスムーズです。
+            右側（スマホでは下）のフォームからそのまま送信できます。メニュー・台数・ご希望日が分かるとスムーズです。
             エアコンの型番や汚れ箇所の写真があると、よりスムーズにご案内できます。
           </p>
 

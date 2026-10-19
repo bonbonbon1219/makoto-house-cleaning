@@ -8,9 +8,9 @@ export function Services() {
       <div className="container">
         <div className="section-head">
           <p className="section-kicker">Services</p>
-          <h2 className="section-title">ハウスクリーニング一式</h2>
+          <h2 className="section-title">ハウスクリーニングメニュー一覧</h2>
           <p className="section-lead">
-            エアコンから水回り、バルコニーまで。単品でも、まとめての一式でもご依頼いただけます。
+            エアコンから水回り、バルコニーまで。福岡市周辺で、単品でも一式でもご依頼いただけます。
             詳しくは
             <Link href="/services/house-cleaning">ハウスクリーニング詳細</Link>
             へ。

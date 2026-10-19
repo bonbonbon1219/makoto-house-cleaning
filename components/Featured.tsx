@@ -8,9 +8,9 @@ export function Featured() {
       <div className="container">
         <div className="section-head">
           <p className="section-kicker">Popular</p>
-          <h2 className="section-title">確かな技術で、暮らしの空気を整える</h2>
+          <h2 className="section-title">福岡で人気のエアコン・換気扇分解洗浄</h2>
           <p className="section-lead">
-            油汚れの換気扇と、カビ・ホコリのエアコン。現場の見えにくいところまで、丁寧に仕上げます。
+            油汚れのレンジフードと、カビ・ホコリのエアコン。見えにくい内部まで丁寧に仕上げます。
             詳しくは
             <Link href="/services">サービス一覧</Link>
             へ。

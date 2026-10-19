@@ -39,11 +39,24 @@
   color: var(--teal);
 }
 
+.nameBlock {
+  display: grid;
+  gap: 0.35rem;
+}
+
 .name {
   font-family: var(--font-display), sans-serif;
   font-size: clamp(1.55rem, 3.5vw, 2.2rem);
   font-weight: 600;
   letter-spacing: 0.06em;
+}
+
+.wards {
+  font-size: 0.86rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+  color: var(--ink-soft);
 }
 
 @media (min-width: 800px) {

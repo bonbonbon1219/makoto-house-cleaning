@@ -4,7 +4,7 @@ import styles from "./Trust.module.css";
 const items = [
   {
     title: "地域密着",
-    text: `${site.areas.join("・")}を中心に対応`,
+    text: "福岡市7区・春日市・那珂川市ほか周辺対応",
   },
   {
     title: "分解洗浄",

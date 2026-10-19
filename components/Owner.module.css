@@ -1,0 +1,72 @@
+.section {
+  background: var(--paper);
+}
+
+.wrap {
+  display: grid;
+  gap: 2rem;
+}
+
+.panel {
+  max-width: 40rem;
+  padding: clamp(1.5rem, 4vw, 2.25rem);
+  border: 1px solid var(--line);
+  background: var(--fog);
+}
+
+.role {
+  margin: 0;
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--teal-deep);
+}
+
+.greeting {
+  margin: 1rem 0 0;
+  color: var(--ink);
+  line-height: 1.9;
+}
+
+.points {
+  display: grid;
+  gap: 0.65rem;
+  margin: 1.35rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.points li {
+  position: relative;
+  padding-left: 1.1rem;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+
+.points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.75em;
+  width: 0.45rem;
+  height: 1px;
+  background: var(--teal);
+}
+
+.more {
+  margin: 1.5rem 0 0;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+
+.more a {
+  color: var(--teal-deep);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.more a:hover {
+  color: var(--teal);
+}

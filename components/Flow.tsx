@@ -7,7 +7,7 @@ export function Flow() {
       <div className="container">
         <div className="section-head">
           <p className="section-kicker">Flow</p>
-          <h2 className="section-title">ご依頼の流れ</h2>
+          <h2 className="section-title">ハウスクリーニングご依頼の流れ</h2>
           <p className="section-lead">初めての方も、この4ステップで完了します。</p>
         </div>
 

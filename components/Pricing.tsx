@@ -7,7 +7,7 @@ export function Pricing() {
       <div className="container">
         <div className="section-head">
           <p className="section-kicker">Pricing</p>
-          <h2 className="section-title">料金</h2>
+          <h2 className="section-title">エアコン・ハウスクリーニングの料金一覧</h2>
           <p className="section-lead">
             表示は税込です。機種・汚れ具合・台数により変わる場合は、作業前にきちんとご説明します。
           </p>
