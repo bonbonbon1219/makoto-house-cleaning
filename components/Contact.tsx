@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useId, useRef, useState } from "react";
 import { site } from "@/lib/site";
 import {
   ESTIMATE_EVENT,
@@ -13,6 +13,7 @@ const OTHER_AREA = "その他地域";
 
 export function Contact() {
   const [sent, setSent] = useState(false);
+  const [showThanks, setShowThanks] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
   const [service, setService] = useState("エアコン洗浄");
@@ -20,7 +21,9 @@ export function Contact() {
   const [otherArea, setOtherArea] = useState("");
   const [message, setMessage] = useState("");
   const [estimateNote, setEstimateNote] = useState("");
-  const statusRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const titleId = useId();
+  const descId = useId();
 
   const needsOtherArea = area === OTHER_AREA;
 
@@ -43,10 +46,29 @@ export function Contact() {
     return () => window.removeEventListener(ESTIMATE_EVENT, onDraft);
   }, []);
 
+  useEffect(() => {
+    if (!showThanks) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeButtonRef.current?.focus();
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setShowThanks(false);
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [showThanks]);
+
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSending(true);
     setSent(false);
+    setShowThanks(false);
     setError("");
 
     const form = event.currentTarget;
@@ -79,12 +101,10 @@ export function Contact() {
       }
 
       setSent(true);
+      setShowThanks(true);
       form.reset();
       setOtherArea("");
       setEstimateNote("");
-      window.setTimeout(() => {
-        statusRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-      }, 50);
     } catch {
       setError("送信に失敗しました。通信環境をご確認のうえ、再度お試しください。");
     } finally {
@@ -114,21 +134,11 @@ export function Contact() {
         </div>
 
         <form className={styles.form} onSubmit={onSubmit}>
-          <div ref={statusRef} aria-live="polite">
-            {sent ? (
-              <div className={styles.success} role="status">
-                <p className={styles.successTitle}>送信完了しました</p>
-                <p className={styles.successText}>
-                  お問い合わせを受け付けました。内容を確認のうえ、ご連絡いたします。
-                </p>
-              </div>
-            ) : null}
-            {error ? (
-              <p className={styles.error} role="alert">
-                {error}
-              </p>
-            ) : null}
-          </div>
+          {error ? (
+            <p className={styles.error} role="alert">
+              {error}
+            </p>
+          ) : null}
 
           {estimateNote ? <p className={styles.estimateNote}>{estimateNote}</p> : null}
 
@@ -224,6 +234,39 @@ export function Contact() {
           </p>
         </form>
       </div>
+
+      {showThanks ? (
+        <div
+          className={styles.modalOverlay}
+          onClick={() => setShowThanks(false)}
+          role="presentation"
+        >
+          <div
+            className={styles.modal}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={titleId}
+            aria-describedby={descId}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <p className={styles.modalKicker}>Thank you</p>
+            <h3 id={titleId} className={styles.modalTitle}>
+              お問い合わせありがとうございます
+            </h3>
+            <p id={descId} className={styles.modalText}>
+              正常に送信できました。内容を確認のうえ、ご連絡いたします。
+            </p>
+            <button
+              ref={closeButtonRef}
+              type="button"
+              className={`btn btn-primary ${styles.modalClose}`}
+              onClick={() => setShowThanks(false)}
+            >
+              閉じる
+            </button>
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }
