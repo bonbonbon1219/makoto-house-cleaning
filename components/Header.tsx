@@ -5,8 +5,8 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import styles from "./Header.module.css";
 
 const links = [
-  { href: "/#featured", label: "人気メニュー", icon: "featured" as const },
-  { href: "/#results", label: "施工前後", icon: "compare" as const },
+  { href: "/services", label: "サービス", icon: "services" as const },
+  { href: "/areas", label: "エリア", icon: "area" as const },
   { href: "/#pricing", label: "料金", icon: "price" as const },
   { href: "/#estimate", label: "自動見積", icon: "estimate" as const },
   { href: "/#contact", label: "お問い合わせ", icon: "contact" as const },
@@ -58,24 +58,29 @@ export function Header() {
 
 function NavIcon({ name }: { name: (typeof links)[number]["icon"] }) {
   switch (name) {
-    case "featured":
+    case "services":
       return (
         <svg viewBox="0 0 24 24" className={styles.icon}>
           <path
-            d="M12 3.5l1.6 4.7h4.9l-4 2.9 1.5 4.7-4-2.9-4 2.9 1.5-4.7-4-2.9h4.9L12 3.5z"
+            d="M5 7h14M5 12h14M5 17h10"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+        </svg>
+      );
+    case "area":
+      return (
+        <svg viewBox="0 0 24 24" className={styles.icon}>
+          <path
+            d="M12 21s6-5.2 6-10.2A6 6 0 0 0 6 10.8C6 15.8 12 21 12 21z"
             fill="none"
             stroke="currentColor"
             strokeWidth="1.5"
             strokeLinejoin="round"
           />
-        </svg>
-      );
-    case "compare":
-      return (
-        <svg viewBox="0 0 24 24" className={styles.icon}>
-          <rect x="3.5" y="5" width="7" height="14" fill="none" stroke="currentColor" strokeWidth="1.5" />
-          <rect x="13.5" y="5" width="7" height="14" fill="none" stroke="currentColor" strokeWidth="1.5" />
-          <path d="M12 8v8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          <circle cx="12" cy="10.5" r="2.2" fill="none" stroke="currentColor" strokeWidth="1.5" />
         </svg>
       );
     case "price":
