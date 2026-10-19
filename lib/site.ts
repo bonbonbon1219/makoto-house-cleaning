@@ -10,8 +10,7 @@ export const site = {
   fukuokaWards: ["東区", "博多区", "中央区", "南区", "西区", "城南区", "早良区"] as const,
   hours: "受付 9:00–18:00（年中無休・要予約）",
   team: {
-    staffCount: 3,
-    crewCount: 4,
+    staffCount: 4,
     greeting:
       "見知らぬ業者を家に入れるのは不安だと思います。だからこそ、作業前後の状態確認と、料金の事前説明を大切にしています。代表を含む作業者4名（男性2名・女性2名）で伺います。",
     points: [
@@ -30,7 +29,7 @@ export const site = {
   legal: {
     operator: "真（Makoto）ハウスクリーニング",
     representative: "大櫛　真",
-    staffCount: 3,
+    staffCount: 4,
     postalCode: "811-1254",
     address: "福岡県那珂川市道善2-45-310",
     businessHours: "9:00–18:00（年中無休・要予約）",
