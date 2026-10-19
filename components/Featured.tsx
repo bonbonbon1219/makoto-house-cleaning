@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { featuredServices } from "@/lib/site";
 import styles from "./Featured.module.css";
 
@@ -10,6 +11,9 @@ export function Featured() {
           <h2 className="section-title">確かな技術で、暮らしの空気を整える</h2>
           <p className="section-lead">
             油汚れの換気扇と、カビ・ホコリのエアコン。現場の見えにくいところまで、丁寧に仕上げます。
+            詳しくは
+            <Link href="/services">サービス一覧</Link>
+            へ。
           </p>
         </div>
 
@@ -21,13 +25,18 @@ export function Featured() {
                 <span className={styles.rule} aria-hidden="true" />
               </div>
               <div className={styles.body}>
-                <h3 className={styles.title}>{service.title}</h3>
+                <h3 className={styles.title}>
+                  <Link href={service.href}>{service.title}</Link>
+                </h3>
                 <p className={styles.lead}>{service.lead}</p>
                 <ul className={styles.points}>
                   {service.points.map((point) => (
                     <li key={point}>{point}</li>
                   ))}
                 </ul>
+                <p className={styles.more}>
+                  <Link href={service.href}>詳しく見る</Link>
+                </p>
               </div>
             </article>
           ))}

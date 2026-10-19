@@ -11,6 +11,7 @@ export function LocalBusinessJsonLd() {
     telephone: site.phone,
     ...(site.email ? { email: site.email } : {}),
     url: "https://makoto-hk.com/",
+    image: "https://makoto-hk.com/brand/makoto-logo.png",
     areaServed: site.areas.map((name) => ({
       "@type": "City",
       name,
@@ -23,8 +24,57 @@ export function LocalBusinessJsonLd() {
       streetAddress: "道善2-45-310",
       addressCountry: "JP",
     },
-    openingHours: "Mo-Su 09:00-18:00",
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ],
+      opens: "09:00",
+      closes: "18:00",
+    },
     priceRange: "¥¥",
+    knowsAbout: [
+      "エアコンクリーニング",
+      "レンジフード分解洗浄",
+      "ハウスクリーニング",
+      "福岡市",
+    ],
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "クリーニングメニュー",
+      itemListElement: [
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "壁掛けエアコン洗浄（通常）",
+            url: "https://makoto-hk.com/services/aircon-cleaning",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "レンジフード・換気扇分解洗浄",
+            url: "https://makoto-hk.com/services/range-hood",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "ハウスクリーニング一式",
+            url: "https://makoto-hk.com/services/house-cleaning",
+          },
+        },
+      ],
+    },
   };
 
   return (

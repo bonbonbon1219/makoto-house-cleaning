@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { allServices } from "@/lib/site";
 import styles from "./Services.module.css";
 
@@ -10,6 +11,9 @@ export function Services() {
           <h2 className="section-title">ハウスクリーニング一式</h2>
           <p className="section-lead">
             エアコンから水回り、バルコニーまで。単品でも、まとめての一式でもご依頼いただけます。
+            詳しくは
+            <Link href="/services/house-cleaning">ハウスクリーニング詳細</Link>
+            へ。
           </p>
         </div>
 

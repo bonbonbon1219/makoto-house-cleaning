@@ -160,6 +160,16 @@ select {
   max-width: 34rem;
 }
 
+.section-lead a {
+  color: var(--teal-deep);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.section-lead a:hover {
+  color: var(--teal);
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
