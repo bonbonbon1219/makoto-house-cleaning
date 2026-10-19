@@ -78,7 +78,9 @@ export default function AboutPage() {
       <p>
         ご相談・お見積りは
         <Link href="/#contact">お問い合わせフォーム</Link>
-        またはお電話（{site.phone}）までご連絡ください。
+        、お電話（{site.phone}）、またはメール（
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+        ）までご連絡ください。
       </p>
 
       <p className={styles.note}>

@@ -37,6 +37,9 @@ export function Footer() {
           <p>
             <a href={`tel:${site.phoneTel}`}>{site.phone}</a>
           </p>
+          <p>
+            <a href={`mailto:${site.email}`}>{site.email}</a>
+          </p>
 
           <nav className={styles.siteNav} aria-label="サイト内リンク">
             {homeLinks.map((item) => (

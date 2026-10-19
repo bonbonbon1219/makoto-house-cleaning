@@ -5,7 +5,7 @@ export const site = {
   tagline: "キッチンの換気扇から、エアコンの中まで。丁寧に、まっすぐに。",
   phone: "070-7480-0510",
   phoneTel: "07074800510",
-  email: "",
+  email: "info@makoto-hk.com",
   areas: ["福岡市", "春日市", "那珂川市", "大野城市"],
   hours: "受付 9:00–18:00（年中無休・要予約）",
   legal: {
@@ -23,7 +23,7 @@ export const site = {
     extraFees: "特になし",
     business:
       "エアコン洗浄（壁掛け・お掃除機能付き・業務用天井埋め込み）、レンジフード・換気扇分解洗浄、浴室・トイレ・キッチン等のハウスクリーニング、飲食店などの換気口、油汚れ洗浄",
-    updatedAt: "2026年9月18日",
+    updatedAt: "2026年10月19日",
   },
 } as const;
 

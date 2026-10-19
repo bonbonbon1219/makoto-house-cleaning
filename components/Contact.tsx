@@ -13,6 +13,8 @@ const OTHER_AREA = "その他地域";
 
 export function Contact() {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
   const [service, setService] = useState("エアコン洗浄");
   const [area, setArea] = useState<string>(site.areas[0]);
   const [otherArea, setOtherArea] = useState("");
@@ -40,9 +42,50 @@ export function Contact() {
     return () => window.removeEventListener(ESTIMATE_EVENT, onDraft);
   }, []);
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setSent(true);
+    setSending(true);
+    setSent(false);
+    setError("");
+
+    const form = event.currentTarget;
+    const data = new FormData(form);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: String(data.get("name") ?? ""),
+          phone: String(data.get("phone") ?? ""),
+          email: String(data.get("email") ?? ""),
+          area,
+          otherArea,
+          service,
+          message,
+        }),
+      });
+
+      const result = (await response.json()) as { ok?: boolean; error?: string };
+
+      if (!response.ok || !result.ok) {
+        if (result.error === "mail_not_configured") {
+          setError("メール送信の準備がまだ完了していません。お電話またはメールで直接ご連絡ください。");
+        } else {
+          setError("送信に失敗しました。時間をおいて再度お試しいただくか、お電話・メールでご連絡ください。");
+        }
+        return;
+      }
+
+      setSent(true);
+      form.reset();
+      setOtherArea("");
+      setEstimateNote("");
+    } catch {
+      setError("送信に失敗しました。通信環境をご確認のうえ、再度お試しください。");
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -59,8 +102,10 @@ export function Contact() {
             <a href={`tel:${site.phoneTel}`} className={styles.phone}>
               {site.phone}
             </a>
+            <a href={`mailto:${site.email}`} className={styles.email}>
+              {site.email}
+            </a>
             <p className={styles.meta}>{site.hours}</p>
-            <p className={styles.meta}>※電話番号は仮のものです。公開前に差し替えてください。</p>
           </div>
         </div>
 
@@ -141,19 +186,24 @@ export function Contact() {
             />
           </label>
 
-          <button type="submit" className={`btn btn-primary ${styles.submit}`}>
-            送信する（デモ）
+          <button type="submit" className={`btn btn-primary ${styles.submit}`} disabled={sending}>
+            {sending ? "送信中…" : "送信する"}
           </button>
           <p className={styles.privacy}>
             送信により
             <a href="/privacy">プライバシーポリシー</a>
             に同意したものとみなします。
           </p>
-          {sent && (
-            <p className={styles.note} role="status">
-              デモ送信を受け付けました。見積内容を含むメッセージも一緒に送れます（本番ではメール／LINE連携を接続してください）。
+          {error ? (
+            <p className={styles.error} role="alert">
+              {error}
             </p>
-          )}
+          ) : null}
+          {sent ? (
+            <p className={styles.note} role="status">
+              送信しました。内容を確認のうえ、ご連絡いたします。
+            </p>
+          ) : null}
         </form>
       </div>
     </section>
