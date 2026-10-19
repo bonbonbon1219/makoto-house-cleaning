@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { site } from "@/lib/site";
 import {
   ESTIMATE_EVENT,
@@ -20,6 +20,7 @@ export function Contact() {
   const [otherArea, setOtherArea] = useState("");
   const [message, setMessage] = useState("");
   const [estimateNote, setEstimateNote] = useState("");
+  const statusRef = useRef<HTMLDivElement>(null);
 
   const needsOtherArea = area === OTHER_AREA;
 
@@ -81,6 +82,9 @@ export function Contact() {
       form.reset();
       setOtherArea("");
       setEstimateNote("");
+      window.setTimeout(() => {
+        statusRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 50);
     } catch {
       setError("送信に失敗しました。通信環境をご確認のうえ、再度お試しください。");
     } finally {
@@ -110,21 +114,37 @@ export function Contact() {
         </div>
 
         <form className={styles.form} onSubmit={onSubmit}>
+          <div ref={statusRef} aria-live="polite">
+            {sent ? (
+              <div className={styles.success} role="status">
+                <p className={styles.successTitle}>送信完了しました</p>
+                <p className={styles.successText}>
+                  お問い合わせを受け付けました。内容を確認のうえ、ご連絡いたします。
+                </p>
+              </div>
+            ) : null}
+            {error ? (
+              <p className={styles.error} role="alert">
+                {error}
+              </p>
+            ) : null}
+          </div>
+
           {estimateNote ? <p className={styles.estimateNote}>{estimateNote}</p> : null}
 
           <label className={styles.field}>
             <span>お名前</span>
-            <input name="name" required autoComplete="name" />
+            <input name="name" required autoComplete="name" disabled={sending} />
           </label>
 
           <label className={styles.field}>
             <span>電話番号</span>
-            <input name="phone" type="tel" required autoComplete="tel" />
+            <input name="phone" type="tel" required autoComplete="tel" disabled={sending} />
           </label>
 
           <label className={styles.field}>
             <span>メールアドレス</span>
-            <input name="email" type="email" required autoComplete="email" />
+            <input name="email" type="email" required autoComplete="email" disabled={sending} />
           </label>
 
           <label className={styles.field}>
@@ -134,6 +154,7 @@ export function Contact() {
               value={area}
               onChange={(event) => setArea(event.target.value)}
               required
+              disabled={sending}
             >
               {site.areas.map((item) => (
                 <option key={item} value={item}>
@@ -153,6 +174,7 @@ export function Contact() {
                 onChange={(event) => setOtherArea(event.target.value)}
                 placeholder="例：糸島市、古賀市など"
                 autoComplete="address-level2"
+                disabled={sending}
               />
               <span className={styles.fieldHelp}>
                 対応可否はエリアにより異なります。市区町村名だけでも大丈夫です。
@@ -166,6 +188,7 @@ export function Contact() {
               name="service"
               value={service}
               onChange={(event) => setService(event.target.value)}
+              disabled={sending}
             >
               <option>エアコン洗浄</option>
               <option>レンジフード・換気扇分解洗浄</option>
@@ -183,27 +206,22 @@ export function Contact() {
               value={message}
               onChange={(event) => setMessage(event.target.value)}
               placeholder="希望日・台数など"
+              disabled={sending}
             />
           </label>
 
-          <button type="submit" className={`btn btn-primary ${styles.submit}`} disabled={sending}>
-            {sending ? "送信中…" : "送信する"}
+          <button
+            type="submit"
+            className={`btn btn-primary ${styles.submit} ${sent ? styles.submitDone : ""}`}
+            disabled={sending}
+          >
+            {sending ? "送信中…" : sent ? "送信完了" : "送信する"}
           </button>
           <p className={styles.privacy}>
             送信により
             <a href="/privacy">プライバシーポリシー</a>
             に同意したものとみなします。
           </p>
-          {error ? (
-            <p className={styles.error} role="alert">
-              {error}
-            </p>
-          ) : null}
-          {sent ? (
-            <p className={styles.note} role="status">
-              送信しました。内容を確認のうえ、ご連絡いたします。
-            </p>
-          ) : null}
         </form>
       </div>
     </section>
