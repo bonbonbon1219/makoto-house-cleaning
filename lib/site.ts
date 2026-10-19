@@ -9,21 +9,28 @@ export const site = {
   areas: ["福岡市", "春日市", "那珂川市", "大野城市", "太宰府市", "筑紫野市", "糸島市"],
   fukuokaWards: ["東区", "博多区", "中央区", "南区", "西区", "城南区", "早良区"] as const,
   hours: "受付 9:00–18:00（年中無休・要予約）",
-  owner: {
-    name: "大櫛　真",
-    role: "代表",
+  team: {
+    staffCount: 3,
+    crewCount: 4,
     greeting:
-      "見知らぬ業者を家に入れるのは不安だと思います。だからこそ、作業前後の状態確認と、料金の事前説明を大切にしています。",
+      "見知らぬ業者を家に入れるのは不安だと思います。だからこそ、作業前後の状態確認と、料金の事前説明を大切にしています。代表を含む作業者4名（男性2名・女性2名）で伺います。",
     points: [
       "エアコン・レンジフードの分解洗浄を中心に対応",
       "見えにくい内部まで丁寧に洗い上げる方針",
       "税込料金を明示し、変更時は作業前にご説明",
       "福岡市周辺を中心に、地域密着で伺います",
     ],
+    members: [
+      { id: "man-1", label: "作業スタッフ（男性）", src: "/team/staff-man-1.webp" },
+      { id: "man-2", label: "作業スタッフ（男性）", src: "/team/staff-man-2.webp" },
+      { id: "woman-1", label: "作業スタッフ（女性）", src: "/team/staff-woman-1.webp" },
+      { id: "woman-2", label: "作業スタッフ（女性）", src: "/team/staff-woman-2.webp" },
+    ],
   },
   legal: {
     operator: "真（Makoto）ハウスクリーニング",
     representative: "大櫛　真",
+    staffCount: 3,
     postalCode: "811-1254",
     address: "福岡県那珂川市道善2-45-310",
     businessHours: "9:00–18:00（年中無休・要予約）",

@@ -21,6 +21,7 @@ export default function AboutPage() {
   const rows = [
     ["事業者", site.legal.operator],
     ["代表", site.legal.representative],
+    ["社員数", `${site.legal.staffCount}名`],
     ["所在地", `〒${site.legal.postalCode} ${site.legal.address}`],
     ["電話番号", site.phone],
     ["メール", site.email || ""],
