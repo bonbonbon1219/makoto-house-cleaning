@@ -205,14 +205,14 @@ export const beforeAfter = [
   {
     id: "aircon",
     title: "エアコン洗浄",
-    caption: "吹き出し口まわりのカビ・ホコリを、同じアングルで比較",
+    caption: "吹き出し口まわりのカビ・ホコリが気になる状態のイメージ",
     before: "/before-after/aircon-before.webp",
     after: "/before-after/aircon-after.webp",
   },
   {
     id: "kitchen",
     title: "レンジフード・換気扇分解洗浄",
-    caption: "カバーを開けた内部のシロッコファンを、分解洗浄前後で比較",
+    caption: "カバー内のシロッコファンまで分解洗浄するイメージ",
     before: "/before-after/kitchen-before.webp",
     after: "/before-after/kitchen-after.webp",
   },

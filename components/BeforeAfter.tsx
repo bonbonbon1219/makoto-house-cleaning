@@ -10,7 +10,7 @@ export function BeforeAfter() {
           <p className="section-kicker">Before / After</p>
           <h2 className="section-title">洗浄のちがい、一目で。</h2>
           <p className="section-lead">
-            同じ機種・同じアングルで比較。レンジフードはカバー内のシロッコファンまで見せています。
+            洗浄前後のイメージです。実際の仕上がりは機種・汚れ具合により異なります。
           </p>
         </div>
 
@@ -26,7 +26,7 @@ export function BeforeAfter() {
                   <div className={styles.frame}>
                     <OptimizedImage
                       src={item.before}
-                      alt={`${item.title}のビフォー`}
+                      alt={`${item.title}のビフォー（イメージ）`}
                       fill
                       sizes="(max-width: 800px) 92vw, 42vw"
                       className={styles.image}
@@ -38,12 +38,13 @@ export function BeforeAfter() {
                   <div className={styles.frame}>
                     <OptimizedImage
                       src={item.after}
-                      alt={`${item.title}のアフター`}
+                      alt={`${item.title}のアフター（イメージ）`}
                       fill
                       sizes="(max-width: 800px) 92vw, 42vw"
                       className={styles.image}
                     />
                     <span className={`${styles.badge} ${styles.badgeAfter}`}>After</span>
+                    <span className={styles.imageNote}>イメージ写真です</span>
                   </div>
                 </figure>
               </div>

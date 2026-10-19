@@ -76,6 +76,20 @@
   background: rgba(10, 110, 98, 0.9);
 }
 
+.imageNote {
+  position: absolute;
+  right: 0.45rem;
+  bottom: 0.4rem;
+  padding: 0.18rem 0.4rem;
+  background: rgba(15, 28, 31, 0.55);
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  pointer-events: none;
+}
+
 @media (min-width: 800px) {
   .compare {
     grid-template-columns: 1fr 1fr;
