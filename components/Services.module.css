@@ -42,6 +42,18 @@
   padding-left: 0.35rem;
 }
 
+.items a {
+  display: block;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-color: rgba(10, 110, 98, 0.35);
+}
+
+.items a:hover {
+  color: var(--teal-deep);
+}
+
 @media (min-width: 720px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
