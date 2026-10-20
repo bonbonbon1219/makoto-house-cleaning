@@ -10,8 +10,11 @@
     bottom: 0;
     z-index: 45;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 0.55rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     padding: 0.55rem 0.75rem calc(0.55rem + env(safe-area-inset-bottom));
     background: color-mix(in srgb, var(--header-bg) 92%, transparent);
     backdrop-filter: blur(14px);

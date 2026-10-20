@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useId, useState } from "react";
+import { createPortal } from "react-dom";
 import { site } from "@/lib/site";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -94,38 +95,43 @@ export function Header() {
         </div>
       </div>
 
-      <div
-        className={`${styles.drawer} ${open ? styles.drawerOpen : ""}`}
-        id={menuId}
-        aria-hidden={!open}
-      >
-        <button
-          type="button"
-          className={styles.backdrop}
-          aria-label="メニューを閉じる"
-          tabIndex={open ? 0 : -1}
-          onClick={closeMenu}
-        />
-        <nav className={styles.panel} aria-label="モバイルメニュー">
-          <p className={styles.panelTitle}>メニュー</p>
-          <ul className={styles.panelList}>
-            {links.map((link) => (
-              <li key={link.href}>
-                <Link href={link.href} className={styles.panelLink} onClick={closeMenu}>
-                  <span className={styles.iconWrap} aria-hidden="true">
-                    <NavIcon name={link.icon} />
-                  </span>
-                  <span>{link.label}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <a href={`tel:${site.phoneTel}`} className={styles.panelPhone} onClick={closeMenu}>
-            <PhoneIcon />
-            <span>{site.phone}</span>
-          </a>
-        </nav>
-      </div>
+      {typeof document !== "undefined"
+        ? createPortal(
+            <div
+              className={`${styles.drawer} ${open ? styles.drawerOpen : ""}`}
+              id={menuId}
+              aria-hidden={!open}
+            >
+              <button
+                type="button"
+                className={styles.backdrop}
+                aria-label="メニューを閉じる"
+                tabIndex={open ? 0 : -1}
+                onClick={closeMenu}
+              />
+              <nav className={styles.panel} aria-label="モバイルメニュー">
+                <p className={styles.panelTitle}>メニュー</p>
+                <ul className={styles.panelList}>
+                  {links.map((link) => (
+                    <li key={link.href}>
+                      <Link href={link.href} className={styles.panelLink} onClick={closeMenu}>
+                        <span className={styles.iconWrap} aria-hidden="true">
+                          <NavIcon name={link.icon} />
+                        </span>
+                        <span>{link.label}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                <a href={`tel:${site.phoneTel}`} className={styles.panelPhone} onClick={closeMenu}>
+                  <PhoneIcon />
+                  <span>{site.phone}</span>
+                </a>
+              </nav>
+            </div>,
+            document.body,
+          )
+        : null}
     </header>
   );
 }
