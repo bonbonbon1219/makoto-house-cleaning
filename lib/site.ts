@@ -5,6 +5,7 @@ export const site = {
   tagline: "キッチンの換気扇から、エアコンの中まで。丁寧に、まっすぐに。",
   phone: "070-7480-0510",
   phoneTel: "07074800510",
+  phoneNote: "※お客様専用",
   email: "info@makoto-hk.com",
   areas: ["福岡市", "春日市", "那珂川市", "大野城市", "太宰府市", "筑紫野市", "糸島市"],
   fukuokaWards: ["東区", "博多区", "中央区", "南区", "西区", "城南区", "早良区"] as const,

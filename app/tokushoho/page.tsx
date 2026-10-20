@@ -49,7 +49,17 @@ export default function TokushohoPage() {
           {rows.map(([label, value]) => (
             <tr key={label}>
               <th scope="row">{label}</th>
-              <td>{value}</td>
+              <td>
+                {label === "電話番号" ? (
+                  <>
+                    {value}
+                    <br />
+                    {site.phoneNote}
+                  </>
+                ) : (
+                  value
+                )}
+              </td>
             </tr>
           ))}
         </tbody>

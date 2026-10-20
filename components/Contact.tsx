@@ -314,6 +314,7 @@ export function Contact() {
             <a href={`tel:${site.phoneTel}`} className={styles.phone}>
               {site.phone}
             </a>
+            <p className={styles.phoneNote}>{site.phoneNote}</p>
             <a href={`mailto:${site.email}`} className={styles.email}>
               {site.email}
             </a>

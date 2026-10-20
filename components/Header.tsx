@@ -76,7 +76,10 @@ export function Header() {
             <span className={styles.phoneIcon} aria-hidden="true">
               <PhoneIcon />
             </span>
-            <span>{site.phone}</span>
+            <span className={styles.phoneText}>
+              <span>{site.phone}</span>
+              <span className={styles.phoneNote}>{site.phoneNote}</span>
+            </span>
           </a>
           <button
             type="button"
@@ -125,7 +128,10 @@ export function Header() {
                 </ul>
                 <a href={`tel:${site.phoneTel}`} className={styles.panelPhone} onClick={closeMenu}>
                   <PhoneIcon />
-                  <span>{site.phone}</span>
+                  <span className={styles.phoneText}>
+                    <span>{site.phone}</span>
+                    <span className={styles.phoneNote}>{site.phoneNote}</span>
+                  </span>
                 </a>
               </nav>
             </div>,

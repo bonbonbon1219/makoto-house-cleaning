@@ -39,6 +39,7 @@ export function Footer() {
           <p>対応：{site.areas.join("・")}</p>
           <p>
             <a href={`tel:${site.phoneTel}`}>{site.phone}</a>
+            <span className={styles.phoneNote}>{site.phoneNote}</span>
           </p>
           <p>
             <a href={`mailto:${site.email}`}>{site.email}</a>

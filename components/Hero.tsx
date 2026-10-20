@@ -36,9 +36,12 @@ export function Hero() {
           福岡市7区・春日市・那珂川市・大野城市・太宰府市・筑紫野市・糸島市に対応します。
         </p>
         <div className={styles.actions}>
-          <a href={`tel:${site.phoneTel}`} className="btn btn-primary">
-            電話で相談する {site.phone}
-          </a>
+          <div className={styles.call}>
+            <a href={`tel:${site.phoneTel}`} className="btn btn-primary">
+              電話で相談する {site.phone}
+            </a>
+            <p className={styles.phoneNote}>{site.phoneNote}</p>
+          </div>
           <a href="/#contact" className="btn btn-ghost">
             フォームで問い合わせ
           </a>

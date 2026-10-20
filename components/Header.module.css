@@ -287,6 +287,12 @@
   height: 1.15rem;
 }
 
+.panelPhone .phoneNote {
+  font-size: 0.75rem;
+  color: var(--teal-deep);
+  opacity: 0.75;
+}
+
 .phone {
   display: none;
   align-items: center;
@@ -297,6 +303,19 @@
   letter-spacing: 0.04em;
   color: var(--teal-deep);
   transition: color 0.25s var(--ease);
+}
+
+.phoneText {
+  display: grid;
+  gap: 0.05rem;
+  line-height: 1.15;
+}
+
+.phoneNote {
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
 }
 
 .phoneIcon {

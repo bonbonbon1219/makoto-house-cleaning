@@ -35,6 +35,8 @@ export default function PrivacyPage() {
         住所：〒{site.legal.postalCode} {site.legal.address}
         <br />
         電話：{site.phone}
+        <br />
+        {site.phoneNote}
         {site.email ? (
           <>
             <br />
@@ -84,6 +86,8 @@ export default function PrivacyPage() {
       <p>
         連絡先：{site.email ? `${site.email} ／ ` : ""}
         {site.phone}
+        <br />
+        {site.phoneNote}
       </p>
 
       <h2>8. 本ポリシーの変更</h2>
