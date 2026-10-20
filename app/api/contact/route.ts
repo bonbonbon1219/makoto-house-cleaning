@@ -133,18 +133,24 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "invalid_form" }, { status: 400 });
   }
 
-  const name = String(formData.get("name") ?? "").trim();
-  const phone = String(formData.get("phone") ?? "").trim();
-  const email = String(formData.get("email") ?? "").trim();
-  const area = String(formData.get("area") ?? "").trim();
-  const otherArea = String(formData.get("otherArea") ?? "").trim();
-  const service = String(formData.get("service") ?? "").trim();
-  const message = String(formData.get("message") ?? "").trim();
-  const reference = String(formData.get("reference") ?? "").trim();
+  const clip = (value: string, max: number) => value.trim().slice(0, max);
+  const name = clip(String(formData.get("name") ?? ""), 80);
+  const phone = clip(String(formData.get("phone") ?? ""), 40);
+  const email = clip(String(formData.get("email") ?? ""), 120);
+  const area = clip(String(formData.get("area") ?? ""), 300);
+  const otherArea = clip(String(formData.get("otherArea") ?? ""), 80);
+  const service = clip(String(formData.get("service") ?? ""), 80);
+  const message = clip(String(formData.get("message") ?? ""), 4000);
+  const reference = clip(String(formData.get("reference") ?? ""), 40);
+  const company = clip(String(formData.get("company") ?? ""), 120);
+  const floorPlan = clip(String(formData.get("floorPlan") ?? ""), 40);
+  const dueDate = clip(String(formData.get("dueDate") ?? ""), 80);
+  const keyHandover = clip(String(formData.get("keyHandover") ?? ""), 200);
+  const isBusiness = String(formData.get("inquiryType") ?? "").trim() === "business";
   const photoFollowUp = String(formData.get("photoFollowUp") ?? "").trim() === "1";
   const photoCount = String(formData.get("photoCount") ?? "").trim();
 
-  if (!name || !phone || !email || !area || !service) {
+  if (!name || !phone || !email || !area || !service || (isBusiness && !company)) {
     return NextResponse.json({ ok: false, error: "missing_fields" }, { status: 400 });
   }
 
@@ -174,13 +180,21 @@ export async function POST(request: Request) {
           : "添付写真: なし";
 
   const text = [
-    photoFollowUp ? "ホームページお問い合わせ（写真）" : "ホームページお問い合わせ",
+    isBusiness
+      ? "ホームページ 法人・管理会社からのご相談"
+      : photoFollowUp
+        ? "ホームページお問い合わせ（写真）"
+        : "ホームページお問い合わせ",
     "",
     reference ? `お問い合わせ番号: ${reference}` : null,
-    `お名前: ${name}`,
+    company ? `会社名: ${company}` : null,
+    isBusiness ? `担当者名: ${name}` : `お名前: ${name}`,
     `電話番号: ${phone}`,
     `メール: ${email}`,
-    `地域: ${areaLine}`,
+    isBusiness ? `物件所在地: ${areaLine}` : `地域: ${areaLine}`,
+    floorPlan ? `間取り: ${floorPlan}` : null,
+    dueDate ? `希望完了日: ${dueDate}` : null,
+    keyHandover ? `鍵の受け渡し: ${keyHandover}` : null,
     `希望メニュー: ${service}`,
     imageNote,
     "",
@@ -190,9 +204,11 @@ export async function POST(request: Request) {
     .filter((line): line is string => line !== null)
     .join("\n");
 
-  const subject = photoFollowUp
-    ? `【お問い合わせ写真】${service} / ${name}様${reference ? ` / ${reference}` : ""}`
-    : `【お問い合わせ】${service} / ${name}様${reference ? ` / ${reference}` : ""}`;
+  const subject = isBusiness
+    ? `【法人のご依頼】${service} / ${company}`
+    : photoFollowUp
+      ? `【お問い合わせ写真】${service} / ${name}様${reference ? ` / ${reference}` : ""}`
+      : `【お問い合わせ】${service} / ${name}様${reference ? ` / ${reference}` : ""}`;
 
   try {
     const transporter = nodemailer.createTransport({

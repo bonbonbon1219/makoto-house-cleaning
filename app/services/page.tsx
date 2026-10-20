@@ -40,6 +40,13 @@ export default function ServicesIndexPage() {
           ))}
         </ul>
 
+        <h2>不動産管理会社・オーナー様</h2>
+        <p>
+          退去後の空室清掃、原状回復の洗浄、エアコンとレンジフードの分解洗浄は
+          <Link href="/business">管理会社・オーナー様向けのページ</Link>
+          からご相談ください。金額は物件ごとに見積もりし、ページには出していません。
+        </p>
+
         <h2>対応エリア</h2>
         <p>
           <Link href="/areas">{site.areas.join("・")}</Link>

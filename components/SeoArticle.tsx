@@ -48,6 +48,11 @@ export function SeoArticle({ page, parent }: Props) {
 
         <h2>関連リンク</h2>
         <ul>
+          {parent.href === "/areas" ? (
+            <li>
+              <Link href="/business">退去後清掃・空室クリーニング（管理会社・オーナー様）</Link>
+            </li>
+          ) : null}
           {page.related.map((item) => (
             <li key={item.href}>
               <Link href={item.href}>{item.label}</Link>

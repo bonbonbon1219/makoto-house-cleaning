@@ -13,7 +13,9 @@ export function Services() {
             エアコンから水回り、バルコニーまで。福岡市周辺で、単品でも一式でもご依頼いただけます。
             詳しくは
             <Link href="/services/house-cleaning">ハウスクリーニング詳細</Link>
-            へ。
+            へ。退去後の空室清掃は
+            <Link href="/business">管理会社・オーナー様向けのご案内</Link>
+            をご覧ください。
           </p>
         </div>
 

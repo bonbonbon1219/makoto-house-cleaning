@@ -451,6 +451,7 @@ export const servicePages: SeoPage[] = [
       },
     ],
     related: [
+      { href: "/business", label: "退去後清掃・空室クリーニング（管理会社・オーナー様）" },
       { href: "/#pricing", label: "料金表" },
       { href: "/#estimate", label: "かんたん自動見積" },
       { href: "/areas/fukuoka", label: "福岡市の対応" },

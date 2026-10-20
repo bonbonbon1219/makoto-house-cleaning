@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/services`, lastModified, changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/areas`, lastModified, changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/booking`, lastModified, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/business`, lastModified, changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/about`, lastModified, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/privacy`, lastModified, changeFrequency: "yearly", priority: 0.3 },
     { url: `${base}/tokushoho`, lastModified, changeFrequency: "yearly", priority: 0.3 },
