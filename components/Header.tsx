@@ -95,7 +95,7 @@ export function Header() {
         </div>
       </div>
 
-      {typeof document !== "undefined"
+      {open && typeof document !== "undefined"
         ? createPortal(
             <div
               className={`${styles.drawer} ${open ? styles.drawerOpen : ""}`}

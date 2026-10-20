@@ -233,13 +233,7 @@
   background: var(--ui-surface);
   border-left: 1px solid var(--line);
   box-shadow: -16px 0 40px rgba(15, 28, 31, 0.12);
-  transform: translateX(104%);
-  transition: transform 0.3s var(--ease);
   overflow-y: auto;
-}
-
-.drawerOpen .panel {
-  transform: translateX(0);
 }
 
 .panelTitle {
