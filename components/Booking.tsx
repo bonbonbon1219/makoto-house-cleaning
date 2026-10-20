@@ -1,12 +1,13 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useId, useMemo, useRef, useState } from "react";
 import { site } from "@/lib/site";
 import {
   ESTIMATE_EVENT,
   type EstimateDraft,
   readEstimateDraft,
 } from "@/lib/estimateHandoff";
+import { compressImageForUpload, UPLOAD_MAX_BYTES } from "@/lib/compressImage";
 import {
   MARK_LABEL,
   tokyoToday,
@@ -18,6 +19,10 @@ import styles from "./Booking.module.css";
 
 const OTHER_AREA = "その他地域";
 const WEEKDAYS = ["日", "月", "火", "水", "木", "金", "土"];
+const MAX_PHOTOS = 3;
+const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
+const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
+const ALLOWED_EXT = /\.(jpe?g|png|webp)$/i;
 const SERVICES = [
   "エアコン洗浄",
   "レンジフード・換気扇分解洗浄",
@@ -26,6 +31,17 @@ const SERVICES = [
   "トイレクリーニング",
   "その他・複数メニュー",
 ];
+
+type PhotoItem = {
+  id: string;
+  file: File;
+  previewUrl: string;
+};
+
+function isAllowedPhoto(file: File) {
+  if (file.type && ALLOWED_TYPES.has(file.type)) return true;
+  return ALLOWED_EXT.test(file.name);
+}
 
 type MonthPayload = {
   ok?: boolean;
@@ -64,10 +80,74 @@ export function Booking() {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
   const [doneId, setDoneId] = useState("");
+  const [doneDetail, setDoneDetail] = useState("");
+  const [photos, setPhotos] = useState<PhotoItem[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const photosRef = useRef<PhotoItem[]>([]);
+  const photosHelpId = useId();
 
   const dayMap = useMemo(() => new Map(days.map((d) => [d.date, d])), [days]);
   const today = tokyoToday();
   const canGoPrev = year > minYear || (year === minYear && month > minMonth);
+
+  useEffect(() => {
+    photosRef.current = photos;
+  }, [photos]);
+
+  useEffect(() => {
+    return () => {
+      photosRef.current.forEach((item) => URL.revokeObjectURL(item.previewUrl));
+    };
+  }, []);
+
+  function clearPhotos() {
+    setPhotos((current) => {
+      current.forEach((item) => URL.revokeObjectURL(item.previewUrl));
+      return [];
+    });
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  function removePhoto(id: string) {
+    setPhotos((current) => {
+      const target = current.find((item) => item.id === id);
+      if (target) URL.revokeObjectURL(target.previewUrl);
+      return current.filter((item) => item.id !== id);
+    });
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  function onPhotosSelected(fileList: FileList | null) {
+    if (!fileList?.length) return;
+    setError("");
+    const incoming = Array.from(fileList);
+    const next: PhotoItem[] = [];
+    let rejected = false;
+
+    for (const file of incoming) {
+      if (photos.length + next.length >= MAX_PHOTOS) {
+        rejected = true;
+        break;
+      }
+      if (!isAllowedPhoto(file) || file.size > MAX_PHOTO_BYTES) {
+        rejected = true;
+        continue;
+      }
+      next.push({
+        id: `${file.name}-${file.size}-${file.lastModified}-${Math.random().toString(36).slice(2, 8)}`,
+        file,
+        previewUrl: URL.createObjectURL(file),
+      });
+    }
+
+    if (next.length) {
+      setPhotos((current) => [...current, ...next].slice(0, MAX_PHOTOS));
+    }
+    if (rejected || incoming.length > next.length) {
+      setError("写真は jpg / png / webp のみ、各5MBまで、最大3枚までです。");
+    }
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
 
   useEffect(() => {
     function applyDraft(draft: EstimateDraft | null) {
@@ -170,7 +250,20 @@ export function Booking() {
 
     setSending(true);
     setError("");
+    setDoneDetail("");
     try {
+      let compressed: File[] = [];
+      if (photos.length) {
+        try {
+          compressed = await Promise.all(
+            photos.map((item) => compressImageForUpload(item.file, UPLOAD_MAX_BYTES)),
+          );
+        } catch {
+          setError("写真の処理に失敗しました。別の画像でお試しいただくか、メールで直接お送りください。");
+          return;
+        }
+      }
+
       const res = await fetch("/api/booking", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -200,7 +293,37 @@ export function Booking() {
         };
         throw new Error(map[data.error || ""] || "送信に失敗しました。");
       }
+
+      let photosSent = 0;
+      for (const [index, file] of compressed.entries()) {
+        const photoPayload = new FormData();
+        photoPayload.set("bookingId", data.booking.id);
+        photoPayload.set("date", selectedDate);
+        photoPayload.set("name", name);
+        photoPayload.set("phone", phone);
+        photoPayload.set("email", email);
+        photoPayload.set("service", service);
+        photoPayload.set("index", String(index + 1));
+        photoPayload.set("total", String(compressed.length));
+        photoPayload.append("photos", file, file.name || `photo-${index + 1}.jpg`);
+
+        const photoRes = await fetch("/api/booking/photo", {
+          method: "POST",
+          body: photoPayload,
+        });
+        if (photoRes.ok) photosSent += 1;
+      }
+
       setDoneId(data.booking.id);
+      if (compressed.length && photosSent < compressed.length) {
+        setDoneDetail(
+          `仮予約は届きましたが、写真は ${photosSent}/${compressed.length} 枚のみ送信できました。残りは ${site.email} へ直接お送りください。`,
+        );
+      } else if (compressed.length) {
+        setDoneDetail(`写真 ${photosSent} 枚もあわせて送信しました。`);
+      }
+
+      clearPhotos();
       const avail = await fetch(`/api/booking/availability?year=${year}&month=${month}`, {
         cache: "no-store",
       });
@@ -302,9 +425,12 @@ export function Booking() {
               </p>
 
               {doneId ? (
-                <p className={styles.success} role="status">
-                  仮予約を受け付けました。確認メールをお送りしました（予約ID: {doneId.slice(0, 8)}…）。店舗からの確定連絡をお待ちください。
-                </p>
+                <div className={styles.success} role="status">
+                  <p>
+                    仮予約を受け付けました。確認メールをお送りしました（予約ID: {doneId.slice(0, 8)}…）。店舗からの確定連絡をお待ちください。
+                  </p>
+                  {doneDetail ? <p>{doneDetail}</p> : null}
+                </div>
               ) : (
                 <form className={styles.form} onSubmit={onSubmit}>
                   {estimateNote ? <p className={styles.estimateNote}>{estimateNote}</p> : null}
@@ -315,6 +441,7 @@ export function Booking() {
                       value={service}
                       onChange={(e) => setService(e.target.value)}
                       required
+                      disabled={sending}
                     >
                       {SERVICES.map((item) => (
                         <option key={item} value={item}>
@@ -331,6 +458,7 @@ export function Booking() {
                       onChange={(e) => setName(e.target.value)}
                       required
                       autoComplete="name"
+                      disabled={sending}
                     />
                   </label>
                   <label className={styles.label}>
@@ -341,6 +469,7 @@ export function Booking() {
                       onChange={(e) => setPhone(e.target.value)}
                       required
                       autoComplete="tel"
+                      disabled={sending}
                     />
                   </label>
                   <label className={styles.label}>
@@ -352,6 +481,7 @@ export function Booking() {
                       onChange={(e) => setEmail(e.target.value)}
                       required
                       autoComplete="email"
+                      disabled={sending}
                     />
                   </label>
                   <label className={styles.label}>
@@ -361,6 +491,7 @@ export function Booking() {
                       value={area}
                       onChange={(e) => setArea(e.target.value)}
                       required
+                      disabled={sending}
                     >
                       {site.areas.map((item) => (
                         <option key={item} value={item}>
@@ -378,6 +509,7 @@ export function Booking() {
                         value={otherArea}
                         onChange={(e) => setOtherArea(e.target.value)}
                         required
+                        disabled={sending}
                       />
                     </label>
                   ) : null}
@@ -388,8 +520,61 @@ export function Booking() {
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder="例：午前希望、〇時以降など"
+                      disabled={sending}
                     />
                   </label>
+
+                  <div className={styles.label}>
+                    <span id={photosHelpId}>写真（任意）</span>
+                    <p className={styles.fieldHelp}>
+                      型番シールや汚れ箇所の写真があるとスムーズです。jpg / png / webp、最大{MAX_PHOTOS}
+                      枚。送信時に自動で軽量化します。
+                    </p>
+                    <div className={styles.photoActions}>
+                      <label className={styles.photoPicker}>
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+                          multiple
+                          disabled={sending || photos.length >= MAX_PHOTOS}
+                          aria-describedby={photosHelpId}
+                          onChange={(event) => onPhotosSelected(event.target.files)}
+                        />
+                        写真を選ぶ
+                      </label>
+                      {photos.length > 0 ? (
+                        <button
+                          type="button"
+                          className={styles.photoClear}
+                          onClick={clearPhotos}
+                          disabled={sending}
+                        >
+                          すべて削除
+                        </button>
+                      ) : null}
+                    </div>
+                    {photos.length > 0 ? (
+                      <ul className={styles.photoList}>
+                        {photos.map((item) => (
+                          <li key={item.id} className={styles.photoItem}>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={item.previewUrl} alt="" className={styles.photoThumb} />
+                            <button
+                              type="button"
+                              className={styles.photoRemove}
+                              onClick={() => removePhoto(item.id)}
+                              disabled={sending}
+                              aria-label={`${item.file.name}を削除`}
+                            >
+                              削除
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </div>
+
                   {error ? <p className={styles.error}>{error}</p> : null}
                   <button
                     type="submit"
