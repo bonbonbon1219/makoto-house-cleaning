@@ -1,37 +1,16 @@
-import { and, eq, gte, inArray, lte, ne, sql } from "drizzle-orm";
+import { and, eq, gte, inArray, lte, sql } from "drizzle-orm";
 import { getDb } from "@/lib/db";
-import { availabilityDay, booking } from "@/lib/db/schema";
+import { booking, dayMark } from "@/lib/db/schema";
 import {
-  DEFAULT_MAX_JOBS,
-  type DayAvailability,
-  type DayMark,
-  type SlotId,
+  DEFAULT_MARK,
+  demoteMark,
+  type DayInfo,
+  type MarkValue,
+  tokyoToday,
 } from "./types";
-
-function markFromRemaining(remaining: number, closed: boolean): DayMark {
-  if (closed || remaining <= 0) return "full";
-  if (remaining === 1) return "few";
-  return "open";
-}
-
-function emptyDay(date: string): DayAvailability {
-  return {
-    date,
-    mark: "open",
-    remaining: DEFAULT_MAX_JOBS,
-    maxJobs: DEFAULT_MAX_JOBS,
-    booked: 0,
-    closed: false,
-    amOpen: true,
-    pmOpen: true,
-    amBookable: true,
-    pmBookable: true,
-  };
-}
 
 function eachDate(from: string, to: string): string[] {
   const dates: string[] = [];
-  // Iterate by calendar day strings to avoid UTC/server TZ drift.
   const [fy, fm, fd] = from.split("-").map(Number);
   const [ty, tm, td] = to.split("-").map(Number);
   const cursor = new Date(Date.UTC(fy, fm - 1, fd));
@@ -46,22 +25,23 @@ function eachDate(from: string, to: string): string[] {
   return dates;
 }
 
-export async function getMonthAvailability(year: number, month: number): Promise<DayAvailability[]> {
+export async function getMonthDays(year: number, month: number): Promise<DayInfo[]> {
   const from = `${year}-${String(month).padStart(2, "0")}-01`;
   const lastDay = new Date(year, month, 0).getDate();
   const to = `${year}-${String(month).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`;
-  return getRangeAvailability(from, to);
+  return getRangeDays(from, to);
 }
 
-export async function getRangeAvailability(from: string, to: string): Promise<DayAvailability[]> {
+export async function getRangeDays(from: string, to: string): Promise<DayInfo[]> {
   const db = getDb();
   const dates = eachDate(from, to);
+  const today = tokyoToday();
 
-  const [rows, counts] = await Promise.all([
+  const [marks, counts] = await Promise.all([
     db
       .select()
-      .from(availabilityDay)
-      .where(and(gte(availabilityDay.date, from), lte(availabilityDay.date, to))),
+      .from(dayMark)
+      .where(and(gte(dayMark.date, from), lte(dayMark.date, to))),
     db
       .select({
         date: booking.date,
@@ -78,96 +58,40 @@ export async function getRangeAvailability(from: string, to: string): Promise<Da
       .groupBy(booking.date),
   ]);
 
-  const byDate = new Map(rows.map((row) => [row.date, row]));
-  const bookedByDate = new Map(counts.map((row) => [row.date, Number(row.count)]));
+  const markMap = new Map(marks.map((row) => [row.date, row.mark as MarkValue]));
+  const countMap = new Map(counts.map((row) => [row.date, Number(row.count)]));
 
   return dates.map((date) => {
-    const row = byDate.get(date);
-    const maxJobs = row?.maxJobs ?? DEFAULT_MAX_JOBS;
-    const closed = row?.closed ?? false;
-    const amOpen = row?.amOpen ?? true;
-    const pmOpen = row?.pmOpen ?? true;
-    const booked = bookedByDate.get(date) ?? 0;
-    const remaining = closed ? 0 : Math.max(0, maxJobs - booked);
-    const mark = markFromRemaining(remaining, closed);
-    const hasCapacity = remaining > 0 && !closed;
-
-    return {
-      date,
-      mark,
-      remaining,
-      maxJobs,
-      booked,
-      closed,
-      amOpen,
-      pmOpen,
-      amBookable: hasCapacity && amOpen,
-      pmBookable: hasCapacity && pmOpen,
-    };
+    const mark = markMap.get(date) ?? DEFAULT_MARK;
+    const bookingCount = countMap.get(date) ?? 0;
+    const bookable = mark !== "full" && date >= today;
+    return { date, mark, bookable, bookingCount };
   });
 }
 
-export async function getDayAvailability(date: string): Promise<DayAvailability> {
-  const [day] = await getRangeAvailability(date, date);
-  return day ?? emptyDay(date);
-}
-
-export async function assertSlotBookable(date: string, slot: SlotId) {
-  const day = await getDayAvailability(date);
-  if (day.mark === "full" || day.remaining <= 0) {
-    return { ok: false as const, error: "day_full", day };
-  }
-  if (slot === "am" && !day.amBookable) {
-    return { ok: false as const, error: "slot_closed", day };
-  }
-  if (slot === "pm" && !day.pmBookable) {
-    return { ok: false as const, error: "slot_closed", day };
-  }
-  return { ok: true as const, day };
-}
-
-export async function upsertAvailability(input: {
-  date: string;
-  maxJobs: number;
-  amOpen: boolean;
-  pmOpen: boolean;
-  closed: boolean;
-  note?: string;
-}) {
+export async function getDayMark(date: string): Promise<MarkValue> {
   const db = getDb();
-  const maxJobs = Math.max(0, Math.min(20, Math.floor(input.maxJobs)));
+  const [row] = await db.select().from(dayMark).where(eq(dayMark.date, date)).limit(1);
+  return (row?.mark as MarkValue | undefined) ?? DEFAULT_MARK;
+}
 
+export async function setDayMark(date: string, mark: MarkValue) {
+  const db = getDb();
   await db
-    .insert(availabilityDay)
-    .values({
-      date: input.date,
-      maxJobs,
-      amOpen: input.amOpen,
-      pmOpen: input.pmOpen,
-      closed: input.closed,
-      note: input.note ?? "",
-      updatedAt: new Date(),
-    })
+    .insert(dayMark)
+    .values({ date, mark, updatedAt: new Date() })
     .onConflictDoUpdate({
-      target: availabilityDay.date,
-      set: {
-        maxJobs,
-        amOpen: input.amOpen,
-        pmOpen: input.pmOpen,
-        closed: input.closed,
-        note: input.note ?? "",
-        updatedAt: new Date(),
-      },
+      target: dayMark.date,
+      set: { mark, updatedAt: new Date() },
     });
 
-  return getDayAvailability(input.date);
+  const [day] = await getRangeDays(date, date);
+  return day;
 }
 
-export async function countActiveOnDate(date: string) {
-  const db = getDb();
-  const [row] = await db
-    .select({ count: sql<number>`cast(count(*) as int)` })
-    .from(booking)
-    .where(and(eq(booking.date, date), ne(booking.status, "cancelled")));
-  return Number(row?.count ?? 0);
+export async function demoteDayMark(date: string): Promise<MarkValue> {
+  const current = await getDayMark(date);
+  const next = demoteMark(current);
+  await setDayMark(date, next);
+  return next;
 }

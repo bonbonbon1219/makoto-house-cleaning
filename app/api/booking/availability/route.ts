@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { getMonthAvailability } from "@/lib/booking/availability";
+import { getMonthDays } from "@/lib/booking/availability";
+import { tokyoYearMonth } from "@/lib/booking/types";
 import { hasDatabase } from "@/lib/db";
 
 export const runtime = "nodejs";
@@ -11,16 +12,23 @@ export async function GET(request: Request) {
   }
 
   const { searchParams } = new URL(request.url);
-  const year = Number(searchParams.get("year"));
-  const month = Number(searchParams.get("month"));
+  let year = Number(searchParams.get("year"));
+  let month = Number(searchParams.get("month"));
+  const now = tokyoYearMonth();
 
   if (!Number.isInteger(year) || !Number.isInteger(month) || month < 1 || month > 12) {
     return NextResponse.json({ ok: false, error: "invalid_params" }, { status: 400 });
   }
 
+  // Disallow requesting months before the current Tokyo month.
+  if (year < now.year || (year === now.year && month < now.month)) {
+    year = now.year;
+    month = now.month;
+  }
+
   try {
-    const days = await getMonthAvailability(year, month);
-    return NextResponse.json({ ok: true, year, month, days });
+    const days = await getMonthDays(year, month);
+    return NextResponse.json({ ok: true, year, month, days, minYear: now.year, minMonth: now.month });
   } catch (error) {
     console.error("availability failed", error);
     return NextResponse.json({ ok: false, error: "fetch_failed" }, { status: 500 });

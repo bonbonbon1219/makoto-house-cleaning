@@ -1,11 +1,10 @@
 import { site } from "@/lib/site";
-import { SLOT_LABEL, type SlotId } from "./types";
+import { MARK_LABEL, type MarkValue } from "./types";
 
 export type BookingMailPayload = {
   id: string;
   status: string;
   date: string;
-  slot: SlotId;
   name: string;
   phone: string;
   email: string;
@@ -15,6 +14,7 @@ export type BookingMailPayload = {
   message?: string;
   estimateNote?: string;
   adminNote?: string;
+  markAfter?: MarkValue;
 };
 
 function areaLine(payload: BookingMailPayload) {
@@ -26,7 +26,6 @@ function baseLines(payload: BookingMailPayload) {
     `予約ID: ${payload.id}`,
     `状態: ${payload.status}`,
     `希望日: ${payload.date}`,
-    `時間帯: ${SLOT_LABEL[payload.slot]}`,
     `お名前: ${payload.name}`,
     `電話: ${payload.phone}`,
     `メール: ${payload.email}`,
@@ -40,15 +39,21 @@ function baseLines(payload: BookingMailPayload) {
 }
 
 export function provisionalShopMail(payload: BookingMailPayload) {
+  const markNote = payload.markAfter
+    ? `カレンダー表示は自動で「${MARK_LABEL[payload.markAfter]}」に更新しました。`
+    : null;
   return {
     subject: `【仮予約】${payload.service} / ${payload.name}様 / ${payload.date}`,
     text: [
       "ホームページから仮予約が入りました。管理画面で確定してください。",
+      markNote,
       "",
       ...baseLines(payload),
       "",
-      `管理画面: https://makoto-hk.com/admin/bookings`,
-    ].join("\n"),
+      "管理画面: https://makoto-hk.com/admin/bookings",
+    ]
+      .filter((line): line is string => line !== null)
+      .join("\n"),
   };
 }
 
@@ -59,11 +64,11 @@ export function provisionalCustomerMail(payload: BookingMailPayload) {
       `${payload.name} 様`,
       "",
       `${site.brandJa}です。仮予約を受け付けました。`,
-      "内容を確認のうえ、確定のご連絡をいたします。",
+      "内容を確認のうえ、確定のご連絡をいたします。時間帯は別途調整する場合があります。",
       "",
       ...baseLines(payload),
       "",
-      "※まだ確定ではありません。日程の調整をお願いする場合があります。",
+      "※まだ確定ではありません。",
       "",
       `電話: ${site.phone}`,
       `メール: ${site.email}`,

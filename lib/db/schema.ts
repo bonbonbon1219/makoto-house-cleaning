@@ -1,14 +1,6 @@
-import {
-  boolean,
-  date,
-  integer,
-  pgEnum,
-  pgTable,
-  text,
-  timestamp,
-  uuid,
-  varchar,
-} from "drizzle-orm/pg-core";
+import { date, pgEnum, pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+
+export const dayMarkEnum = pgEnum("day_mark_value", ["open", "few", "full"]);
 
 export const bookingStatusEnum = pgEnum("booking_status", [
   "provisional",
@@ -16,15 +8,9 @@ export const bookingStatusEnum = pgEnum("booking_status", [
   "cancelled",
 ]);
 
-export const bookingSlotEnum = pgEnum("booking_slot", ["am", "pm"]);
-
-export const availabilityDay = pgTable("availability_day", {
+export const dayMark = pgTable("day_mark", {
   date: date("date", { mode: "string" }).primaryKey(),
-  maxJobs: integer("max_jobs").notNull().default(2),
-  amOpen: boolean("am_open").notNull().default(true),
-  pmOpen: boolean("pm_open").notNull().default(true),
-  closed: boolean("closed").notNull().default(false),
-  note: text("note").notNull().default(""),
+  mark: dayMarkEnum("mark").notNull().default("open"),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
@@ -32,7 +18,6 @@ export const booking = pgTable("booking", {
   id: uuid("id").defaultRandom().primaryKey(),
   status: bookingStatusEnum("status").notNull().default("provisional"),
   date: date("date", { mode: "string" }).notNull(),
-  slot: bookingSlotEnum("slot").notNull(),
   name: varchar("name", { length: 120 }).notNull(),
   phone: varchar("phone", { length: 40 }).notNull(),
   email: varchar("email", { length: 200 }).notNull(),
@@ -46,7 +31,7 @@ export const booking = pgTable("booking", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
-export type AvailabilityDay = typeof availabilityDay.$inferSelect;
+export type DayMarkRow = typeof dayMark.$inferSelect;
 export type Booking = typeof booking.$inferSelect;
 export type BookingStatus = (typeof bookingStatusEnum.enumValues)[number];
-export type BookingSlot = (typeof bookingSlotEnum.enumValues)[number];
+export type MarkValue = (typeof dayMarkEnum.enumValues)[number];

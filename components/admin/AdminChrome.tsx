@@ -21,7 +21,7 @@ export function AdminChrome({ children }: { children: ReactNode }) {
         <p className={styles.brand}>真HK 管理</p>
         <nav className={styles.nav} aria-label="管理メニュー">
           <Link href="/admin/calendar" data-active={pathname?.startsWith("/admin/calendar") ? "true" : "false"}>
-            空き枠
+            〇△×カレンダー
           </Link>
           <Link href="/admin/bookings" data-active={pathname?.startsWith("/admin/bookings") ? "true" : "false"}>
             予約一覧

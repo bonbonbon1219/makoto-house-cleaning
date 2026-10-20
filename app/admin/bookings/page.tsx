@@ -3,14 +3,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminChrome } from "@/components/admin/AdminChrome";
-import { SLOT_LABEL, type SlotId } from "@/lib/booking/types";
+import { tokyoToday } from "@/lib/booking/types";
 import styles from "../admin.module.css";
 
 type BookingRow = {
   id: string;
   status: "provisional" | "confirmed" | "cancelled";
   date: string;
-  slot: SlotId;
   name: string;
   phone: string;
   email: string;
@@ -34,11 +33,7 @@ export default function AdminBookingsPage() {
   const [bookings, setBookings] = useState<BookingRow[]>([]);
   const [error, setError] = useState("");
   const [busyId, setBusyId] = useState("");
-
-  const today = useMemo(
-    () => new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Tokyo" }),
-    [],
-  );
+  const today = useMemo(() => tokyoToday(), []);
 
   async function load() {
     setError("");
@@ -51,7 +46,7 @@ export default function AdminBookingsPage() {
     }
     const data = (await res.json()) as { ok?: boolean; bookings?: BookingRow[]; error?: string };
     if (!res.ok || !data.ok || !data.bookings) {
-      setError(data.error === "db_not_configured" ? "DATABASE_URL 未設定です" : "読み込みに失敗しました");
+      setError("読み込みに失敗しました");
       return;
     }
     setBookings(data.bookings);
@@ -95,7 +90,9 @@ export default function AdminBookingsPage() {
     <AdminChrome>
       <div className={styles.card}>
         <h1 className={styles.title}>予約一覧</h1>
-        <p className={styles.lead}>仮予約を確認して確定／キャンセルできます。確定・キャンセル時はお客へメールします。</p>
+        <p className={styles.lead}>
+          仮予約を確認し、必要なら電話で時間を調整してから確定してください。確定・キャンセル時はお客へメールします。
+        </p>
 
         <div className={styles.filters}>
           {(
@@ -126,7 +123,7 @@ export default function AdminBookingsPage() {
               <div className={styles.itemHead}>
                 <strong>
                   {item.date}
-                  {item.date === today ? "（今日）" : ""} · {SLOT_LABEL[item.slot]}
+                  {item.date === today ? "（今日）" : ""}
                 </strong>
                 <span className={`${styles.badge} ${badgeClass(item.status)}`}>
                   {STATUS_LABEL[item.status]}

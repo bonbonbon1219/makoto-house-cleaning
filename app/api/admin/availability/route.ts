@@ -1,10 +1,13 @@
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/adminAuth";
-import { getMonthAvailability, upsertAvailability } from "@/lib/booking/availability";
+import { getMonthDays, setDayMark } from "@/lib/booking/availability";
+import { tokyoYearMonth, type MarkValue } from "@/lib/booking/types";
 import { hasDatabase } from "@/lib/db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+const MARKS = new Set<MarkValue>(["open", "few", "full"]);
 
 export async function GET(request: Request) {
   if (!(await isAdminAuthenticated())) {
@@ -15,14 +18,21 @@ export async function GET(request: Request) {
   }
 
   const { searchParams } = new URL(request.url);
-  const year = Number(searchParams.get("year"));
-  const month = Number(searchParams.get("month"));
+  let year = Number(searchParams.get("year"));
+  let month = Number(searchParams.get("month"));
+  const now = tokyoYearMonth();
+
   if (!Number.isInteger(year) || !Number.isInteger(month) || month < 1 || month > 12) {
     return NextResponse.json({ ok: false, error: "invalid_params" }, { status: 400 });
   }
 
-  const days = await getMonthAvailability(year, month);
-  return NextResponse.json({ ok: true, year, month, days });
+  if (year < now.year || (year === now.year && month < now.month)) {
+    year = now.year;
+    month = now.month;
+  }
+
+  const days = await getMonthDays(year, month);
+  return NextResponse.json({ ok: true, year, month, days, minYear: now.year, minMonth: now.month });
 }
 
 export async function PUT(request: Request) {
@@ -41,22 +51,16 @@ export async function PUT(request: Request) {
   }
 
   const date = String(body.date ?? "");
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-    return NextResponse.json({ ok: false, error: "invalid_date" }, { status: 400 });
+  const mark = String(body.mark ?? "") as MarkValue;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !MARKS.has(mark)) {
+    return NextResponse.json({ ok: false, error: "invalid_input" }, { status: 400 });
   }
 
   try {
-    const day = await upsertAvailability({
-      date,
-      maxJobs: Number(body.maxJobs ?? 2),
-      amOpen: Boolean(body.amOpen),
-      pmOpen: Boolean(body.pmOpen),
-      closed: Boolean(body.closed),
-      note: String(body.note ?? ""),
-    });
+    const day = await setDayMark(date, mark);
     return NextResponse.json({ ok: true, day });
   } catch (error) {
-    console.error("availability update failed", error);
+    console.error("mark update failed", error);
     return NextResponse.json({ ok: false, error: "update_failed" }, { status: 500 });
   }
 }

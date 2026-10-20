@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
 import { and, desc, eq, gte, lte } from "drizzle-orm";
 import { isAdminAuthenticated } from "@/lib/adminAuth";
-import { getDb, hasDatabase } from "@/lib/db";
-import { booking } from "@/lib/db/schema";
-import { getMailConfig, sendMail } from "@/lib/mail";
 import {
   cancelledCustomerMail,
   confirmedCustomerMail,
 } from "@/lib/booking/mailCopy";
-import type { BookingStatus } from "@/lib/db/schema";
+import { getDb, hasDatabase } from "@/lib/db";
+import { booking, type BookingStatus } from "@/lib/db/schema";
+import { getMailConfig, sendMail } from "@/lib/mail";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -94,7 +93,6 @@ export async function PATCH(request: Request) {
     id: updated.id,
     status: updated.status,
     date: updated.date,
-    slot: updated.slot,
     name: updated.name,
     phone: updated.phone,
     email: updated.email,

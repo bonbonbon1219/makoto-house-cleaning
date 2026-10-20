@@ -6,13 +6,13 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "オンライン予約",
-  description: `${site.brandJa}のオンライン予約。福岡市周辺のエアコン・ハウスクリーニングの空き枠（〇△×）を確認して仮予約できます。`,
+  description: `${site.brandJa}のオンライン予約。福岡市周辺のエアコン・ハウスクリーニングの空き（〇△×）を確認して希望日を仮予約できます。`,
   alternates: {
     canonical: "/booking",
   },
   openGraph: {
     title: `オンライン予約｜${site.brandJa}`,
-    description: "空き枠カレンダーから午前・午後を選んで仮予約。店舗確認後に本予約が確定します。",
+    description: "空きカレンダーから希望日を選んで仮予約。店舗確認後に本予約が確定します。時間帯は別途調整します。",
     type: "website",
   },
 };

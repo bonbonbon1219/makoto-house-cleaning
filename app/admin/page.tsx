@@ -43,7 +43,7 @@ export default function AdminLoginPage() {
     <div className={styles.wrap}>
       <div className={styles.card}>
         <h1 className={styles.title}>管理画面ログイン</h1>
-        <p className={styles.lead}>空き枠と予約の管理用です。一般公開はされません。</p>
+        <p className={styles.lead}>スタッフ用です。共有パスワードで空き（〇△×）と予約の確定ができます。</p>
         <form className={styles.loginForm} onSubmit={onSubmit}>
           <label className={styles.label}>
             パスワード
