@@ -1,0 +1,1 @@
+ALTER TABLE "booking" ADD COLUMN IF NOT EXISTS "address" varchar(300) DEFAULT '' NOT NULL;

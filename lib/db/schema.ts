@@ -21,6 +21,7 @@ export const booking = pgTable("booking", {
   name: varchar("name", { length: 120 }).notNull(),
   phone: varchar("phone", { length: 40 }).notNull(),
   email: varchar("email", { length: 200 }).notNull(),
+  address: varchar("address", { length: 300 }).notNull().default(""),
   area: varchar("area", { length: 80 }).notNull(),
   otherArea: varchar("other_area", { length: 120 }).notNull().default(""),
   service: varchar("service", { length: 200 }).notNull(),

@@ -8,6 +8,7 @@ export type BookingMailPayload = {
   name: string;
   phone: string;
   email: string;
+  address?: string;
   area: string;
   otherArea?: string;
   service: string;
@@ -29,6 +30,7 @@ function baseLines(payload: BookingMailPayload) {
     `お名前: ${payload.name}`,
     `電話: ${payload.phone}`,
     `メール: ${payload.email}`,
+    payload.address ? `住所: ${payload.address}` : null,
     `地域: ${areaLine(payload)}`,
     `メニュー: ${payload.service}`,
     payload.estimateNote ? `見積メモ: ${payload.estimateNote}` : null,

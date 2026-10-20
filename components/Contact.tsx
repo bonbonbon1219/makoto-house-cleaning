@@ -94,7 +94,10 @@ export function Contact() {
   useEffect(() => {
     function applyDraft(draft: EstimateDraft | null) {
       if (!draft) return;
-      setMessage(draft.message);
+      const cleanedMessage = draft.message
+        .replace(/\n*※希望日・エリアなどがあれば追記してください。\s*$/u, "")
+        .trim();
+      setMessage(cleanedMessage);
       setService(draft.service);
       setEstimateNote(`自動見積の合計：${draft.totalLabel} を反映しました`);
     }

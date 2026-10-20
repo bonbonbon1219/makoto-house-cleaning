@@ -22,6 +22,7 @@ export async function POST(request: Request) {
     name: String(body.name ?? ""),
     phone: String(body.phone ?? ""),
     email: String(body.email ?? ""),
+    address: String(body.address ?? ""),
     area: String(body.area ?? ""),
     otherArea: String(body.otherArea ?? ""),
     service: String(body.service ?? ""),

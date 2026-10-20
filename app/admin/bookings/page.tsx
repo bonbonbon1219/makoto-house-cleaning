@@ -13,6 +13,7 @@ type BookingRow = {
   name: string;
   phone: string;
   email: string;
+  address: string;
   area: string;
   otherArea: string;
   service: string;
@@ -132,6 +133,7 @@ export default function AdminBookingsPage() {
               <p className={styles.meta}>
                 {item.name} / {item.phone} / {item.email}
               </p>
+              <p className={styles.meta}>住所: {item.address || "（未記入）"}</p>
               <p className={styles.meta}>
                 {item.area}
                 {item.otherArea ? `（${item.otherArea}）` : ""} · {item.service}

@@ -10,6 +10,7 @@ export type CreateBookingInput = {
   name: string;
   phone: string;
   email: string;
+  address: string;
   area: string;
   otherArea?: string;
   service: string;
@@ -27,6 +28,7 @@ export async function createProvisionalBooking(input: CreateBookingInput) {
     !input.name?.trim() ||
     !input.phone?.trim() ||
     !input.email?.trim() ||
+    !input.address?.trim() ||
     !input.area?.trim() ||
     !input.service?.trim()
   ) {
@@ -52,6 +54,7 @@ export async function createProvisionalBooking(input: CreateBookingInput) {
       name: input.name.trim().slice(0, 120),
       phone: input.phone.trim().slice(0, 40),
       email: input.email.trim().slice(0, 200),
+      address: input.address.trim().slice(0, 300),
       area: input.area.trim().slice(0, 80),
       otherArea: (input.otherArea ?? "").trim().slice(0, 120),
       service: input.service.trim().slice(0, 200),
@@ -73,6 +76,7 @@ export async function createProvisionalBooking(input: CreateBookingInput) {
     name: created.name,
     phone: created.phone,
     email: created.email,
+    address: created.address,
     area: created.area,
     otherArea: created.otherArea,
     service: created.service,

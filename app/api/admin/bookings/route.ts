@@ -96,6 +96,7 @@ export async function PATCH(request: Request) {
     name: updated.name,
     phone: updated.phone,
     email: updated.email,
+    address: updated.address,
     area: updated.area,
     otherArea: updated.otherArea,
     service: updated.service,

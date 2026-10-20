@@ -163,8 +163,6 @@ export function Estimate() {
       `セット数：${summary.totalSets}`,
       discountText.trimEnd(),
       `合計（税込）：${yen(summary.total)}`,
-      "",
-      "※希望日・エリアなどがあれば追記してください。",
     ]
       .filter((line) => line !== "")
       .join("\n");

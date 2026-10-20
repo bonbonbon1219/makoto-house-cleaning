@@ -72,6 +72,7 @@ export function Booking() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
   const [area, setArea] = useState<string>(site.areas[0]);
   const [otherArea, setOtherArea] = useState("");
   const [service, setService] = useState(SERVICES[0]);
@@ -152,9 +153,14 @@ export function Booking() {
   useEffect(() => {
     function applyDraft(draft: EstimateDraft | null) {
       if (!draft) return;
-      setMessage(draft.message);
       setService(draft.service || SERVICES[0]);
-      setEstimateNote(`自動見積の合計：${draft.totalLabel}`);
+      // 見積は備考に混ぜず、見積メモ欄へ。備考は希望時間帯などの追記用。
+      const cleanedMessage = draft.message
+        .replace(/\n*※希望日・エリアなどがあれば追記してください。\s*$/u, "")
+        .trim();
+      setEstimateNote(
+        [`自動見積の合計：${draft.totalLabel}`, cleanedMessage].filter(Boolean).join("\n\n"),
+      );
     }
     applyDraft(readEstimateDraft());
     function onDraft(event: Event) {
@@ -243,6 +249,10 @@ export function Booking() {
       setError("希望日を選んでください。");
       return;
     }
+    if (!address.trim()) {
+      setError("住所を入力してください。");
+      return;
+    }
     if (area === OTHER_AREA && !otherArea.trim()) {
       setError("その他地域の詳細を入力してください。");
       return;
@@ -272,6 +282,7 @@ export function Booking() {
           name,
           phone,
           email,
+          address,
           area,
           otherArea,
           service,
@@ -485,6 +496,18 @@ export function Booking() {
                     />
                   </label>
                   <label className={styles.label}>
+                    住所
+                    <input
+                      className={styles.input}
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      required
+                      autoComplete="street-address"
+                      placeholder="例：福岡市中央区〇〇1-2-3 ○○マンション101"
+                      disabled={sending}
+                    />
+                  </label>
+                  <label className={styles.label}>
                     地域
                     <select
                       className={styles.select}
@@ -519,7 +542,7 @@ export function Booking() {
                       className={styles.textarea}
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      placeholder="例：午前希望、〇時以降など"
+                      placeholder="例：午前希望、14時以降、駐車場の有無など"
                       disabled={sending}
                     />
                   </label>
