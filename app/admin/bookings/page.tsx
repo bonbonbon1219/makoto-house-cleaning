@@ -134,10 +134,7 @@ export default function AdminBookingsPage() {
                 {item.name} / {item.phone} / {item.email}
               </p>
               <p className={styles.meta}>住所: {item.address || "（未記入）"}</p>
-              <p className={styles.meta}>
-                {item.area}
-                {item.otherArea ? `（${item.otherArea}）` : ""} · {item.service}
-              </p>
+              <p className={styles.meta}>{item.service}</p>
               {item.estimateNote ? <p className={styles.meta}>見積: {item.estimateNote}</p> : null}
               {item.message ? <p className={styles.meta}>備考: {item.message}</p> : null}
               <label className={styles.label}>

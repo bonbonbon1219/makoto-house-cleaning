@@ -17,7 +17,6 @@ import {
 } from "@/lib/booking/types";
 import styles from "./Booking.module.css";
 
-const OTHER_AREA = "その他地域";
 const WEEKDAYS = ["日", "月", "火", "水", "木", "金", "土"];
 const MAX_PHOTOS = 3;
 const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
@@ -73,8 +72,6 @@ export function Booking() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
-  const [area, setArea] = useState<string>(site.areas[0]);
-  const [otherArea, setOtherArea] = useState("");
   const [service, setService] = useState(SERVICES[0]);
   const [message, setMessage] = useState("");
   const [estimateNote, setEstimateNote] = useState("");
@@ -253,10 +250,6 @@ export function Booking() {
       setError("住所を入力してください。");
       return;
     }
-    if (area === OTHER_AREA && !otherArea.trim()) {
-      setError("その他地域の詳細を入力してください。");
-      return;
-    }
 
     setSending(true);
     setError("");
@@ -283,8 +276,6 @@ export function Booking() {
           phone,
           email,
           address,
-          area,
-          otherArea,
           service,
           message,
           estimateNote,
@@ -507,35 +498,6 @@ export function Booking() {
                       disabled={sending}
                     />
                   </label>
-                  <label className={styles.label}>
-                    地域
-                    <select
-                      className={styles.select}
-                      value={area}
-                      onChange={(e) => setArea(e.target.value)}
-                      required
-                      disabled={sending}
-                    >
-                      {site.areas.map((item) => (
-                        <option key={item} value={item}>
-                          {item}
-                        </option>
-                      ))}
-                      <option value={OTHER_AREA}>{OTHER_AREA}</option>
-                    </select>
-                  </label>
-                  {area === OTHER_AREA ? (
-                    <label className={styles.label}>
-                      地域の詳細
-                      <input
-                        className={styles.input}
-                        value={otherArea}
-                        onChange={(e) => setOtherArea(e.target.value)}
-                        required
-                        disabled={sending}
-                      />
-                    </label>
-                  ) : null}
                   <label className={styles.label}>
                     備考（希望時間帯など）
                     <textarea

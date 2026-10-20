@@ -19,10 +19,12 @@ export type BookingMailPayload = {
 };
 
 function areaLine(payload: BookingMailPayload) {
+  if (!payload.area) return "";
   return payload.otherArea ? `${payload.area}（${payload.otherArea}）` : payload.area;
 }
 
 function baseLines(payload: BookingMailPayload) {
+  const area = areaLine(payload);
   return [
     `予約ID: ${payload.id}`,
     `状態: ${payload.status}`,
@@ -31,7 +33,7 @@ function baseLines(payload: BookingMailPayload) {
     `電話: ${payload.phone}`,
     `メール: ${payload.email}`,
     payload.address ? `住所: ${payload.address}` : null,
-    `地域: ${areaLine(payload)}`,
+    area ? `地域: ${area}` : null,
     `メニュー: ${payload.service}`,
     payload.estimateNote ? `見積メモ: ${payload.estimateNote}` : null,
     "",

@@ -23,8 +23,6 @@ export async function POST(request: Request) {
     phone: String(body.phone ?? ""),
     email: String(body.email ?? ""),
     address: String(body.address ?? ""),
-    area: String(body.area ?? ""),
-    otherArea: String(body.otherArea ?? ""),
     service: String(body.service ?? ""),
     message: String(body.message ?? ""),
     estimateNote: String(body.estimateNote ?? ""),
