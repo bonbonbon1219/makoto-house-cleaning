@@ -31,14 +31,17 @@ function emptyDay(date: string): DayAvailability {
 
 function eachDate(from: string, to: string): string[] {
   const dates: string[] = [];
-  const cursor = new Date(`${from}T00:00:00+09:00`);
-  const end = new Date(`${to}T00:00:00+09:00`);
+  // Iterate by calendar day strings to avoid UTC/server TZ drift.
+  const [fy, fm, fd] = from.split("-").map(Number);
+  const [ty, tm, td] = to.split("-").map(Number);
+  const cursor = new Date(Date.UTC(fy, fm - 1, fd));
+  const end = new Date(Date.UTC(ty, tm - 1, td));
   while (cursor <= end) {
-    const y = cursor.getFullYear();
-    const m = String(cursor.getMonth() + 1).padStart(2, "0");
-    const d = String(cursor.getDate()).padStart(2, "0");
+    const y = cursor.getUTCFullYear();
+    const m = String(cursor.getUTCMonth() + 1).padStart(2, "0");
+    const d = String(cursor.getUTCDate()).padStart(2, "0");
     dates.push(`${y}-${m}-${d}`);
-    cursor.setDate(cursor.getDate() + 1);
+    cursor.setUTCDate(cursor.getUTCDate() + 1);
   }
   return dates;
 }
