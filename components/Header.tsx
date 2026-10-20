@@ -9,6 +9,7 @@ const links = [
   { href: "/areas", label: "エリア", icon: "area" as const },
   { href: "/#pricing", label: "料金", icon: "price" as const },
   { href: "/#estimate", label: "自動見積", icon: "estimate" as const },
+  { href: "/booking", label: "予約", icon: "booking" as const },
   { href: "/#contact", label: "お問い合わせ", icon: "contact" as const },
 ];
 
@@ -101,6 +102,16 @@ function NavIcon({ name }: { name: (typeof links)[number]["icon"] }) {
         <svg viewBox="0 0 24 24" className={styles.icon}>
           <rect x="5" y="3.5" width="14" height="17" fill="none" stroke="currentColor" strokeWidth="1.5" />
           <path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      );
+    case "booking":
+      return (
+        <svg viewBox="0 0 24 24" className={styles.icon}>
+          <rect x="4.5" y="5" width="15" height="14.5" fill="none" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M8 3.5v3M16 3.5v3M4.5 9.5h15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          <circle cx="9" cy="13.5" r="1" fill="currentColor" />
+          <circle cx="12.5" cy="13.5" r="1" fill="currentColor" />
+          <circle cx="16" cy="13.5" r="1" fill="currentColor" />
         </svg>
       );
     case "contact":

@@ -146,11 +146,8 @@ export function Estimate() {
     });
   }
 
-  function goContact() {
-    if (summary.lines.length === 0) {
-      document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-      return;
-    }
+  function pushDraft() {
+    if (summary.lines.length === 0) return;
 
     const lineText = summary.lines
       .map((line) => `・${line.name} × ${line.qty}（${line.detail}／${yen(line.amount)}）`)
@@ -186,8 +183,16 @@ export function Estimate() {
       service,
       totalLabel: yen(summary.total),
     });
+  }
 
+  function goContact() {
+    pushDraft();
     document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+  }
+
+  function goBooking() {
+    pushDraft();
+    window.location.href = "/booking";
   }
 
   const airconItems = estimateItems.filter((item) =>
@@ -294,6 +299,14 @@ export function Estimate() {
             <button
               type="button"
               className={`btn btn-primary ${styles.cta}`}
+              onClick={goBooking}
+              disabled={summary.lines.length === 0}
+            >
+              この内容で予約する
+            </button>
+            <button
+              type="button"
+              className={`btn ${styles.cta}`}
               onClick={goContact}
               disabled={summary.lines.length === 0}
             >

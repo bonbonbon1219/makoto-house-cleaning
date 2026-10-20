@@ -9,6 +9,7 @@ const homeLinks = [
   { href: "/services", label: "サービス一覧" },
   { href: "/areas", label: "対応エリア" },
   { href: "/#estimate", label: "かんたん自動見積" },
+  { href: "/booking", label: "オンライン予約" },
   { href: "/#pricing", label: "料金" },
   { href: "/#contact", label: "お問い合わせ" },
 ] as const;

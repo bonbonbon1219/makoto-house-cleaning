@@ -12,8 +12,9 @@ export function Faq() {
           <p className="section-kicker">FAQ</p>
           <h2 className="section-title">エアコンクリーニング・掃除のよくある質問</h2>
           <p className="section-lead">
-            作業前によくいただくご質問です。不明点はお気軽にお問い合わせください。
-            サービス詳細は
+            作業前によくいただくご質問です。空き枠からのご予約は
+            <Link href="/booking">オンライン予約</Link>
+            、不明点はお気軽にお問い合わせください。サービス詳細は
             <Link href="/services">サービス一覧</Link>
             、エリア別は
             <Link href="/areas">対応エリア</Link>
