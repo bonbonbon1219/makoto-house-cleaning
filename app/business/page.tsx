@@ -200,12 +200,14 @@ export default function BusinessPage() {
           <section className={styles.section} aria-labelledby="area-title">
             <h2 id="area-title">対応エリア</h2>
             <p className={styles.intro}>
-              福岡市（東区・博多区・中央区・南区・西区・城南区・早良区）を中心に、春日市、那珂川市、大野城市、太宰府市、筑紫野市、糸島市へ伺います。エリア外は距離と日程でご相談ください。
+              福岡市（東区・博多区・中央区・南区・西区・城南区・早良区）を中心に、春日市、那珂川市、大野城市、太宰府市、筑紫野市、糸島市へ伺います。エリア外は距離と日程でご相談ください。個人宅の空き確認は
+              <Link href="/booking">オンライン予約</Link>
+              からどうぞ。
             </p>
             <ul className={styles.areas}>
               {site.areas.map((name) => (
                 <li key={name}>
-                  <Link href={`/areas/${areaSlugByName[name]}`}>{name}</Link>
+                  <Link href={`/areas/${areaSlugByName[name]}`}>{name}のエアコン・ハウスクリーニング</Link>
                 </li>
               ))}
             </ul>

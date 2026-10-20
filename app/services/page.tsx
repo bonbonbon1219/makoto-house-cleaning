@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPage } from "@/components/LegalPage";
 import { BreadcrumbJsonLd } from "@/components/BreadcrumbJsonLd";
-import { servicePages } from "@/lib/seoContent";
+import { areaPages, servicePages } from "@/lib/seoContent";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -48,18 +48,28 @@ export default function ServicesIndexPage() {
         </p>
 
         <h2>対応エリア</h2>
-        <p>
-          <Link href="/areas">{site.areas.join("・")}</Link>
-          を中心に対応しています。
-        </p>
+        <p>{site.areas.join("・")}を中心に対応しています。</p>
+        <ul>
+          {areaPages.map((page) => (
+            <li key={page.slug}>
+              <Link href={`/areas/${page.slug}`}>{page.h1}</Link>
+            </li>
+          ))}
+          <li>
+            <Link href="/areas">対応エリア一覧</Link>
+          </li>
+        </ul>
 
-        <h2>料金・見積</h2>
+        <h2>料金・見積・予約</h2>
         <ul>
           <li>
-            <Link href="/#pricing">料金表</Link>
+            <Link href="/#pricing">エアコン・ハウスクリーニングの料金表</Link>
           </li>
           <li>
             <Link href="/#estimate">かんたん自動見積</Link>
+          </li>
+          <li>
+            <Link href="/booking">オンライン予約</Link>
           </li>
           <li>
             <Link href="/#contact">お問い合わせ</Link>

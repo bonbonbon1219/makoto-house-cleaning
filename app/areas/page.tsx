@@ -49,11 +49,20 @@ export default function AreasIndexPage() {
           <li>
             <Link href="/services/house-cleaning">ハウスクリーニング一式</Link>
           </li>
+          <li>
+            <Link href="/business">退去後清掃・空室クリーニング</Link>
+          </li>
+          <li>
+            <Link href="/services">ハウスクリーニングのサービス一覧</Link>
+          </li>
         </ul>
 
-        <h2>お問い合わせ</h2>
+        <h2>予約・お問い合わせ</h2>
         <p>
-          <Link href="/#contact">フォーム</Link>
+          希望日の空きは
+          <Link href="/booking">オンライン予約</Link>
+          で確認できます。内容の相談は
+          <Link href="/#contact">お問い合わせ</Link>
           またはお電話（{site.phone}）までご連絡ください。
         </p>
       </LegalPage>

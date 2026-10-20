@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { SeoPage } from "@/lib/seoContent";
+import { areaServiceLinks, areaSlugByName, serviceAreaLinks, serviceCluster, type SeoPage } from "@/lib/seoContent";
 import { site } from "@/lib/site";
 import { BreadcrumbJsonLd } from "@/components/BreadcrumbJsonLd";
 import { LegalPage } from "@/components/LegalPage";
@@ -11,6 +11,9 @@ type Props = {
 };
 
 export function SeoArticle({ page, parent }: Props) {
+  const city = Object.entries(areaSlugByName).find(([, slug]) => slug === page.slug)?.[0];
+  const menuLinks = city ? areaServiceLinks(city) : serviceCluster.filter((item) => item.href !== `/services/${page.slug}`);
+
   return (
     <>
       <BreadcrumbJsonLd
@@ -46,28 +49,43 @@ export function SeoArticle({ page, parent }: Props) {
           </section>
         ))}
 
-        <h2>関連リンク</h2>
+        {parent.href === "/services" ? (
+          <>
+            <h2>対応エリア</h2>
+            <p>{site.areas.join("・")}を中心に伺います。近隣もご相談ください。</p>
+            <ul>
+              {serviceAreaLinks(page.h1).map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href}>{item.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : null}
+
+        <h2>{city ? "このエリアでよく依頼されるメニュー" : "関連するサービス"}</h2>
         <ul>
-          {parent.href === "/areas" ? (
-            <li>
-              <Link href="/business">退去後清掃・空室クリーニング（管理会社・オーナー様）</Link>
-            </li>
-          ) : null}
-          {page.related.map((item) => (
+          {menuLinks.map((item) => (
             <li key={item.href}>
               <Link href={item.href}>{item.label}</Link>
             </li>
           ))}
+          <li>
+            <Link href={parent.href}>{city ? "対応エリア一覧" : "ハウスクリーニングのサービス一覧"}</Link>
+          </li>
         </ul>
 
-        <h2>お問い合わせ</h2>
+        <h2>予約・お問い合わせ</h2>
         <p>
-          電話：
+          希望日の空きは
+          <Link href="/booking">オンライン予約</Link>
+          で確認できます。内容の相談は
+          <Link href="/#contact">お問い合わせ</Link>
+          、電話
           <a href={`tel:${site.phoneTel}`}>{site.phone}</a>
-          ／メール：
+          、メール
           <a href={`mailto:${site.email}`}>{site.email}</a>
-          ／
-          <Link href="/#contact">お問い合わせフォーム</Link>
+          でも受けています。
         </p>
         <p className={styles.note}>{site.hours}</p>
       </LegalPage>

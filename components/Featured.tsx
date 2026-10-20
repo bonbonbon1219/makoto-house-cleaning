@@ -35,7 +35,7 @@ export function Featured() {
                   ))}
                 </ul>
                 <p className={styles.more}>
-                  <Link href={service.href}>詳しく見る</Link>
+                  <Link href={service.href}>{service.title}の内容と料金</Link>
                 </p>
               </div>
             </article>

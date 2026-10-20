@@ -366,10 +366,6 @@ export const servicePages: SeoPage[] = [
           "型番シールや設置写真を事前に送っていただくと、お掃除機能の有無や追加の見通しが立てやすくなります。",
         ],
       },
-      {
-        heading: "対応エリア",
-        paragraphs: [`${site.areas.join("・")}を中心に伺います。近隣もご相談ください。`],
-      },
     ],
     related: [
       { href: "/areas/fukuoka", label: "福岡市のエアコン洗浄" },
@@ -459,6 +455,29 @@ export const servicePages: SeoPage[] = [
     ],
   },
 ];
+
+export const serviceCluster = [
+  { href: "/services/aircon-cleaning", label: "エアコンクリーニング" },
+  { href: "/services/range-hood", label: "レンジフード・換気扇分解洗浄" },
+  { href: "/services/house-cleaning", label: "ハウスクリーニング一式" },
+  { href: "/business", label: "退去後清掃・空室クリーニング" },
+] as const;
+
+export function serviceAreaLinks(serviceName: string) {
+  return site.areas.map((city) => ({
+    href: `/areas/${areaSlugByName[city]}`,
+    label: `${city}の${serviceName}`,
+  }));
+}
+
+export function areaServiceLinks(city: string) {
+  return [
+    { href: "/services/aircon-cleaning", label: `${city}のエアコンクリーニング` },
+    { href: "/services/range-hood", label: `${city}のレンジフード・換気扇分解洗浄` },
+    { href: "/services/house-cleaning", label: `${city}のハウスクリーニング` },
+    { href: "/business", label: `${city}の退去後清掃・空室クリーニング` },
+  ];
+}
 
 export function getAreaPage(slug: string) {
   return areaPages.find((page) => page.slug === slug);
