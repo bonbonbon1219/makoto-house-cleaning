@@ -8,6 +8,7 @@ import {
   readEstimateDraft,
 } from "@/lib/estimateHandoff";
 import { compressImageForUpload, UPLOAD_MAX_BYTES } from "@/lib/compressImage";
+import { focusFirstInvalid, invalidFieldMessage } from "@/lib/formFeedback";
 import styles from "./Contact.module.css";
 
 const OTHER_AREA = "その他地域";
@@ -202,13 +203,20 @@ export function Contact() {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const form = event.currentTarget;
+    form.dataset.tried = "true";
+
+    if (!form.checkValidity()) {
+      setError(invalidFieldMessage(form));
+      focusFirstInvalid(form);
+      return;
+    }
+
     setSending(true);
     setSent(false);
     setShowThanks(false);
     setError("");
     setThanksDetail("");
-
-    const form = event.currentTarget;
     const fields = new FormData(form);
     const name = String(fields.get("name") ?? "");
     const phone = String(fields.get("phone") ?? "");
@@ -313,9 +321,9 @@ export function Contact() {
           </div>
         </div>
 
-        <form className={styles.form} onSubmit={onSubmit}>
+        <form className={styles.form} noValidate onSubmit={onSubmit}>
           {error ? (
-            <p className={styles.error} role="alert">
+            <p className="form-alert" role="alert">
               {error}
             </p>
           ) : null}

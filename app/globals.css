@@ -86,6 +86,34 @@ body {
   }
 }
 
+.form-alert {
+  margin: 0;
+  padding: 0.75rem 0.85rem;
+  background: #fff4f4;
+  color: #8d1d1d;
+  border: 1px solid #e7b0b0;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+form[data-tried] input:invalid,
+form[data-tried] select:invalid,
+form[data-tried] textarea:invalid {
+  outline: 2px solid #d07070;
+  outline-offset: 1px;
+}
+
+@media (max-width: 979px) {
+  .form-alert {
+    position: fixed;
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: calc(var(--mobile-dock-h) + 0.4rem);
+    z-index: 46;
+    box-shadow: 0 10px 28px rgba(15, 28, 31, 0.16);
+  }
+}
+
 img {
   max-width: 100%;
   display: block;

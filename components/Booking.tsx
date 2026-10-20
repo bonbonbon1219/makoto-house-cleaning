@@ -8,6 +8,7 @@ import {
   readEstimateDraft,
 } from "@/lib/estimateHandoff";
 import { compressImageForUpload, UPLOAD_MAX_BYTES } from "@/lib/compressImage";
+import { focusFirstInvalid, invalidFieldMessage } from "@/lib/formFeedback";
 import {
   MARK_LABEL,
   tokyoToday,
@@ -240,14 +241,19 @@ export function Booking() {
     setDoneId("");
   }
 
-  async function onSubmit(event: FormEvent) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const form = event.currentTarget;
+    form.dataset.tried = "true";
+
     if (!selectedDate) {
-      setError("希望日を選んでください。");
+      setError("カレンダーから希望日を選んでください。");
+      document.getElementById("booking")?.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
     }
-    if (!address.trim()) {
-      setError("住所を入力してください。");
+    if (!form.checkValidity()) {
+      setError(invalidFieldMessage(form));
+      focusFirstInvalid(form);
       return;
     }
 
@@ -434,7 +440,7 @@ export function Booking() {
                   {doneDetail ? <p>{doneDetail}</p> : null}
                 </div>
               ) : (
-                <form className={styles.form} onSubmit={onSubmit}>
+                <form className={styles.form} noValidate onSubmit={onSubmit}>
                   {estimateNote ? <p className={styles.estimateNote}>{estimateNote}</p> : null}
                   <label className={styles.label}>
                     メニュー
@@ -560,11 +566,15 @@ export function Booking() {
                     ) : null}
                   </div>
 
-                  {error ? <p className={styles.error}>{error}</p> : null}
+                  {error ? (
+                    <p className="form-alert" role="alert">
+                      {error}
+                    </p>
+                  ) : null}
                   <button
                     type="submit"
                     className={`btn btn-primary ${styles.submit}`}
-                    disabled={sending || !selectedDate}
+                    disabled={sending}
                   >
                     {sending ? "送信中…" : "仮予約する"}
                   </button>
