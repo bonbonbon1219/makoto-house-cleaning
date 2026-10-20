@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useId, useState } from "react";
 import { site } from "@/lib/site";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -14,10 +17,33 @@ const links = [
 ];
 
 export function Header() {
+  const [open, setOpen] = useState(false);
+  const menuId = useId();
+
+  useEffect(() => {
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setOpen(false);
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previous;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
+  function closeMenu() {
+    setOpen(false);
+  }
+
   return (
     <header className={styles.header}>
       <div className={`container ${styles.inner}`}>
-        <Link href="/" className={styles.brand} aria-label={`${site.brandJa} ホーム`}>
+        <Link href="/" className={styles.brand} aria-label={`${site.brandJa} ホーム`} onClick={closeMenu}>
           <OptimizedImage
             src="/brand/makoto-logo.webp"
             alt=""
@@ -51,7 +77,54 @@ export function Header() {
             </span>
             <span>{site.phone}</span>
           </a>
+          <button
+            type="button"
+            className={styles.menuBtn}
+            aria-expanded={open}
+            aria-controls={menuId}
+            aria-label={open ? "メニューを閉じる" : "メニューを開く"}
+            onClick={() => setOpen((value) => !value)}
+          >
+            <span className={`${styles.menuIcon} ${open ? styles.menuIconOpen : ""}`} aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </span>
+          </button>
         </div>
+      </div>
+
+      <div
+        className={`${styles.drawer} ${open ? styles.drawerOpen : ""}`}
+        id={menuId}
+        aria-hidden={!open}
+      >
+        <button
+          type="button"
+          className={styles.backdrop}
+          aria-label="メニューを閉じる"
+          tabIndex={open ? 0 : -1}
+          onClick={closeMenu}
+        />
+        <nav className={styles.panel} aria-label="モバイルメニュー">
+          <p className={styles.panelTitle}>メニュー</p>
+          <ul className={styles.panelList}>
+            {links.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} className={styles.panelLink} onClick={closeMenu}>
+                  <span className={styles.iconWrap} aria-hidden="true">
+                    <NavIcon name={link.icon} />
+                  </span>
+                  <span>{link.label}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <a href={`tel:${site.phoneTel}`} className={styles.panelPhone} onClick={closeMenu}>
+            <PhoneIcon />
+            <span>{site.phone}</span>
+          </a>
+        </nav>
       </div>
     </header>
   );

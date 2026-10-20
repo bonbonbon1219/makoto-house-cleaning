@@ -19,6 +19,7 @@
   --radius: 0;
   --max: 1180px;
   --header-h: 78px;
+  --mobile-dock-h: 0px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --shadow-soft: 0 24px 60px rgba(15, 28, 31, 0.08);
   --ui-surface: #ffffff;
@@ -74,6 +75,13 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   transition: background-color 0.35s var(--ease), color 0.35s var(--ease);
+  padding-bottom: var(--mobile-dock-h);
+}
+
+@media (max-width: 979px) {
+  :root {
+    --mobile-dock-h: calc(4.2rem + env(safe-area-inset-bottom));
+  }
 }
 
 img {

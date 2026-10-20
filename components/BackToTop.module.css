@@ -1,7 +1,7 @@
 .button {
   position: fixed;
   right: 1rem;
-  bottom: 1rem;
+  bottom: calc(1rem + var(--mobile-dock-h));
   z-index: 50;
   display: inline-flex;
   align-items: center;

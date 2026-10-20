@@ -4,6 +4,7 @@ import { Outfit } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { BackToTop } from "@/components/BackToTop";
+import { MobileDock } from "@/components/MobileDock";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -84,6 +85,7 @@ export default function RootLayout({
         <Header />
         <main id="main">{children}</main>
         <Footer />
+        <MobileDock />
         <BackToTop />
       </body>
     </html>
