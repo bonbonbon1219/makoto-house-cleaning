@@ -70,10 +70,8 @@ export function Featured() {
                           className={styles.image}
                         />
                         <span className={`${styles.badge} ${styles.badgeAfter}`}>After</span>
-                        <span className={styles.imageNote}>イメージ写真です</span>
                       </div>
                     </figure>
-                    <p className={styles.caption}>{photo.caption}</p>
                   </div>
                 ) : null}
               </article>
