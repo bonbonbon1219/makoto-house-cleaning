@@ -141,7 +141,7 @@ export const estimateItems = [
     name: "壁掛けエアコン（通常）",
     unitPrice: 8800,
     pricingType: "wallAc" as const,
-    hint: "1台目8,800円／2台目〜7,000円",
+    hint: "2台目から7,000円",
     group: "default" as const,
   },
   {
@@ -149,7 +149,7 @@ export const estimateItems = [
     name: "お掃除機能付きエアコン",
     unitPrice: 16500,
     pricingType: "flat" as const,
-    hint: "16,500円〜／台",
+    hint: "",
     group: "default" as const,
   },
   {
@@ -157,7 +157,7 @@ export const estimateItems = [
     name: "業務用天井埋め込み式エアコン",
     unitPrice: 22000,
     pricingType: "flat" as const,
-    hint: "22,000円〜／台",
+    hint: "",
     group: "default" as const,
   },
   {
@@ -165,7 +165,7 @@ export const estimateItems = [
     name: "キッチン全体",
     unitPrice: 16500,
     pricingType: "flat" as const,
-    hint: "16,500円〜（レンジフード・換気扇分解洗浄を含む）",
+    hint: "レンジフード・換気扇分解洗浄を含む",
     group: "kitchen" as const,
     role: "parent" as const,
   },
@@ -174,7 +174,7 @@ export const estimateItems = [
     name: "レンジフード・換気扇分解洗浄",
     unitPrice: 9900,
     pricingType: "flat" as const,
-    hint: "9,900円〜（単品の場合、キッチン全体は含まれません）",
+    hint: "単品の場合、キッチン全体は含まれません",
     group: "kitchen" as const,
     role: "child" as const,
   },
@@ -183,7 +183,7 @@ export const estimateItems = [
     name: "浴室クリーニング",
     unitPrice: 13200,
     pricingType: "flat" as const,
-    hint: "13,200円〜",
+    hint: "",
     group: "default" as const,
   },
   {
@@ -191,7 +191,7 @@ export const estimateItems = [
     name: "トイレクリーニング",
     unitPrice: 5500,
     pricingType: "flat" as const,
-    hint: "5,500円〜",
+    hint: "",
     group: "default" as const,
   },
 ] as const;

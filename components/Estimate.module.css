@@ -57,12 +57,23 @@
 
 .name {
   margin: 0;
-  font-weight: 700;
+  font-size: 0.92rem;
+  font-weight: 600;
   letter-spacing: 0.02em;
 }
 
+.price {
+  margin: 0.2rem 0 0;
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  color: var(--teal-deep);
+}
+
 .hint {
-  margin: 0.3rem 0 0;
+  margin: 0.35rem 0 0;
   font-size: 0.86rem;
   color: var(--ink-soft);
 }

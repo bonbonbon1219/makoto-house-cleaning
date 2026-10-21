@@ -17,7 +17,14 @@ function yen(value: number) {
 }
 
 function initialQty(): QtyState {
-  return Object.fromEntries(estimateItems.map((item) => [item.id, 0]));
+  return Object.fromEntries(
+    estimateItems.map((item) => [item.id, item.id === "wall-ac" ? 1 : 0]),
+  );
+}
+
+function priceLabel(item: (typeof estimateItems)[number]) {
+  const amount = item.unitPrice.toLocaleString("ja-JP");
+  return item.pricingType === "wallAc" ? `${amount}円` : `${amount}円〜`;
 }
 
 function ItemRow({
@@ -39,7 +46,8 @@ function ItemRow({
     <div className={`${styles.row} ${nested ? styles.rowNested : ""}`}>
       <div className={styles.info}>
         <p className={styles.name}>{item.name}</p>
-        <p className={styles.hint}>{item.hint}</p>
+        <p className={styles.price}>{priceLabel(item)}</p>
+        {item.hint ? <p className={styles.hint}>{item.hint}</p> : null}
         {disabled && disabledReason ? <p className={styles.lock}>{disabledReason}</p> : null}
       </div>
       <div className={styles.stepper}>
@@ -123,13 +131,13 @@ export function Estimate() {
     const discount = calcSetDiscount(totalSets, hasNonWallAc);
     const total = Math.max(0, subtotal - discount);
 
-    let discountLabel = "なし";
+    let discountLabel = "";
     if (discount === estimateRules.setDiscountThreePlus) {
-      discountLabel = `3セット以上 −${yen(estimateRules.setDiscountThreePlus)}`;
+      discountLabel = `3件以上で${yen(estimateRules.setDiscountThreePlus)}引き`;
     } else if (discount === estimateRules.setDiscountTwo) {
-      discountLabel = `2セット −${yen(estimateRules.setDiscountTwo)}`;
+      discountLabel = `2件で${yen(estimateRules.setDiscountTwo)}引き`;
     } else if (wallAcQty >= 2 && otherQty === 0) {
-      discountLabel = "壁掛けエアコンは2台目以降7,000円で計算済み";
+      discountLabel = "2台目から7,000円で計算しています";
     }
 
     return { lines, subtotal, discount, discountLabel, total, totalSets };
@@ -207,7 +215,7 @@ export function Estimate() {
           <p className="section-kicker">Estimate</p>
           <h2 className="section-title">エアコン・ハウスクリーニングのかんたん自動見積</h2>
           <p className="section-lead">
-            台数・件数を選ぶと料金が出ます。キッチン全体にはレンジフード・換気扇分解洗浄が含まれます。壁掛けエアコン（通常）は2台目以降7,000円です。
+            壁掛けエアコンは1台8,800円、2台目から7,000円です。壁掛け以外と組み合わせると、2件で2,000円引き、3件で5,000円引きです。キッチン全体にはレンジフード・換気扇分解洗浄が含まれます。
           </p>
         </div>
 
@@ -290,7 +298,7 @@ export function Estimate() {
               </div>
             </dl>
 
-            <p className={styles.note}>{summary.discountLabel}</p>
+            {summary.discountLabel ? <p className={styles.note}>{summary.discountLabel}</p> : null}
             <p className={styles.note}>
               表示は税込です。汚れ・機種により変わる場合は、作業前にご説明します。
             </p>
