@@ -1,7 +1,7 @@
 .header {
   position: sticky;
   top: 0;
-  z-index: 90;
+  z-index: 110;
   height: var(--header-h);
   backdrop-filter: blur(14px);
   background: var(--header-bg);
@@ -128,6 +128,7 @@
 .actions {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
   gap: 0.65rem;
   margin-left: auto;
 }
@@ -137,63 +138,37 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.6rem;
-  height: 2.6rem;
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
   border: 1px solid var(--ui-border);
   background: var(--ui-surface);
   color: var(--ink);
   cursor: pointer;
+  position: relative;
+  z-index: 2;
 }
 
 .menuIcon {
-  position: relative;
+  display: grid;
+  place-items: center;
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.menuGlyph {
+  width: 1.35rem;
+  height: 1.35rem;
   display: block;
-  width: 1.15rem;
-  height: 0.9rem;
-}
-
-.menuIcon span {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 1.5px;
-  background: currentColor;
-  transition: transform 0.25s var(--ease), opacity 0.2s var(--ease), top 0.25s var(--ease);
-}
-
-.menuIcon span:nth-child(1) {
-  top: 0;
-}
-
-.menuIcon span:nth-child(2) {
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.menuIcon span:nth-child(3) {
-  bottom: 0;
-  top: auto;
-}
-
-.menuIconOpen span:nth-child(1) {
-  top: 50%;
-  transform: translateY(-50%) rotate(45deg);
-}
-
-.menuIconOpen span:nth-child(2) {
-  opacity: 0;
-}
-
-.menuIconOpen span:nth-child(3) {
-  top: 50%;
-  bottom: auto;
-  transform: translateY(-50%) rotate(-45deg);
 }
 
 .drawer {
   position: fixed;
-  inset: 0;
-  z-index: 80;
+  top: var(--header-h);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
   overflow: hidden;
   pointer-events: none;
   visibility: hidden;
@@ -207,10 +182,7 @@
 .backdrop {
   appearance: none;
   position: absolute;
-  top: var(--header-h);
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: 0;
   border: 0;
   background: rgba(9, 21, 23, 0.42);
   opacity: 0;
@@ -224,11 +196,11 @@
 
 .panel {
   position: absolute;
-  top: var(--header-h);
+  top: 0;
   right: 0;
   width: min(20rem, 100%);
   max-width: 100%;
-  height: calc(100% - var(--header-h));
+  height: 100%;
   padding: 1.1rem 1rem calc(1.5rem + var(--mobile-dock-h));
   background: var(--ui-surface);
   border-left: 1px solid var(--line);
@@ -236,13 +208,44 @@
   overflow-y: auto;
 }
 
-.panelTitle {
+.panelHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
   margin: 0 0 0.85rem;
+}
+
+.panelTitle {
+  margin: 0;
   font-family: var(--font-display), sans-serif;
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   color: var(--ink-soft);
+}
+
+.panelClose {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  gap: 0.35rem;
+  min-width: 5.5rem;
+  min-height: 2.75rem;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--ui-border);
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.panelClose .menuGlyph {
+  width: 1.15rem;
+  height: 1.15rem;
 }
 
 .panelList {

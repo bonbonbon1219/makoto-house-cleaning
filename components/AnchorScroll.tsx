@@ -21,8 +21,8 @@ export function AnchorScroll() {
       const target = document.getElementById(decodeURIComponent(url.hash.slice(1)));
       if (!target) return;
 
+      // preventDefault だけにする。ここで伝播を止めると、メニューを閉じる onClick まで届かない。
       event.preventDefault();
-      event.stopPropagation();
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       history.replaceState(history.state, "", `${url.pathname}${url.search}${url.hash}`);
       target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });

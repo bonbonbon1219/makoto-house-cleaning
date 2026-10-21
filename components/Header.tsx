@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
 import { createPortal } from "react-dom";
 import { site } from "@/lib/site";
@@ -21,6 +22,11 @@ const links = [
 export function Header() {
   const [open, setOpen] = useState(false);
   const menuId = useId();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     if (!open) return;
@@ -90,10 +96,8 @@ export function Header() {
             aria-label={open ? "メニューを閉じる" : "メニューを開く"}
             onClick={() => setOpen((value) => !value)}
           >
-            <span className={`${styles.menuIcon} ${open ? styles.menuIconOpen : ""}`} aria-hidden="true">
-              <span />
-              <span />
-              <span />
+            <span className={styles.menuIcon} aria-hidden="true">
+              {open ? <CloseGlyph /> : <MenuGlyph />}
             </span>
           </button>
         </div>
@@ -114,7 +118,13 @@ export function Header() {
                 onClick={closeMenu}
               />
               <nav className={styles.panel} aria-label="モバイルメニュー">
-                <p className={styles.panelTitle}>メニュー</p>
+                <div className={styles.panelHead}>
+                  <p className={styles.panelTitle}>メニュー</p>
+                  <button type="button" className={styles.panelClose} onClick={closeMenu}>
+                    <CloseGlyph />
+                    <span>閉じる</span>
+                  </button>
+                </div>
                 <ul className={styles.panelList}>
                   {links.map((link) => (
                     <li key={link.href}>
@@ -226,6 +236,22 @@ function NavIcon({ name }: { name: (typeof links)[number]["icon"] }) {
         </svg>
       );
   }
+}
+
+function MenuGlyph() {
+  return (
+    <svg viewBox="0 0 24 24" className={styles.menuGlyph}>
+      <path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function CloseGlyph() {
+  return (
+    <svg viewBox="0 0 24 24" className={styles.menuGlyph}>
+      <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
 }
 
 function PhoneIcon() {
