@@ -1,7 +1,6 @@
 import { Hero } from "@/components/Hero";
 import { Trust } from "@/components/Trust";
 import { Featured } from "@/components/Featured";
-import { BeforeAfter } from "@/components/BeforeAfter";
 import { Services } from "@/components/Services";
 import { Pricing } from "@/components/Pricing";
 import { Estimate } from "@/components/Estimate";
@@ -19,7 +18,6 @@ export default function HomePage() {
       <Hero />
       <Trust />
       <Featured />
-      <BeforeAfter />
       <Services />
       <Pricing />
       <Estimate />
