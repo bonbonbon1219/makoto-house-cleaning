@@ -9,6 +9,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import styles from "./Header.module.css";
 
 const links = [
+  { href: "/", label: "HOME", icon: "home" as const },
   { href: "/services", label: "サービス", icon: "services" as const },
   { href: "/areas", label: "エリア", icon: "area" as const },
   { href: "/#pricing", label: "料金", icon: "price" as const },
@@ -144,6 +145,18 @@ export function Header() {
 
 function NavIcon({ name }: { name: (typeof links)[number]["icon"] }) {
   switch (name) {
+    case "home":
+      return (
+        <svg viewBox="0 0 24 24" className={styles.icon}>
+          <path
+            d="M4 11.2 12 4.5l8 6.7V20a1 1 0 0 1-1 1h-4.5v-5.5h-5V21H5a1 1 0 0 1-1-1v-8.8z"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
     case "services":
       return (
         <svg viewBox="0 0 24 24" className={styles.icon}>

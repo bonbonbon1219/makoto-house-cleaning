@@ -341,6 +341,11 @@
     display: flex;
   }
 
+  .navLink {
+    min-width: 4.05rem;
+    padding-inline: 0.35rem;
+  }
+
   .actions {
     margin-left: 0;
   }
