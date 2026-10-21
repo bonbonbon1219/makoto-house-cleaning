@@ -8,6 +8,7 @@
 .layout {
   display: grid;
   gap: 1.5rem;
+  min-width: 0;
 }
 
 @media (min-width: 960px) {
@@ -22,6 +23,8 @@
   border: 1px solid var(--ui-border);
   padding: 1.25rem 1.15rem 1.4rem;
   box-shadow: var(--shadow-soft);
+  min-width: 0;
+  max-width: 100%;
 }
 
 .calendarHead {
@@ -77,12 +80,14 @@
 .legendItem {
   display: inline-flex;
   align-items: center;
+  flex: 0 0 auto;
   gap: 0.4rem;
+  white-space: nowrap;
 }
 
 .weekdays {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 0.35rem;
   margin-bottom: 0.35rem;
   text-align: center;
@@ -93,16 +98,18 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 0.35rem;
+  min-width: 0;
 }
 
 .cell {
   appearance: none;
   border: 1px solid transparent;
   background: transparent;
+  min-width: 0;
   min-height: 4.2rem;
-  padding: 0.35rem 0.2rem 0.45rem;
+  padding: 0.35rem 0.1rem 0.45rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -119,6 +126,7 @@
 
 .cellEmpty {
   pointer-events: none;
+  min-width: 0;
   min-height: 4.2rem;
 }
 
@@ -145,8 +153,9 @@
 }
 
 .mark {
-  width: 1.7rem;
-  height: 1.7rem;
+  width: min(1.7rem, 100%);
+  aspect-ratio: 1;
+  height: auto;
   border-radius: 999px;
   display: grid;
   place-items: center;
@@ -180,6 +189,8 @@ html[data-theme="dark"] .markFull {
 .side {
   display: grid;
   gap: 1rem;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .sideCard {
@@ -237,11 +248,13 @@ html[data-theme="dark"] .markFull {
 .form {
   display: grid;
   gap: 0.75rem;
+  min-width: 0;
 }
 
 .label {
   display: grid;
   gap: 0.3rem;
+  min-width: 0;
   font-size: 0.88rem;
   color: var(--ink-soft);
 }
@@ -250,6 +263,8 @@ html[data-theme="dark"] .markFull {
 .select,
 .textarea {
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid var(--ui-border);
   background: var(--paper);
   color: var(--ink);
@@ -314,6 +329,8 @@ html[data-theme="dark"] .markFull {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  max-width: 100%;
   min-height: 2.5rem;
   padding: 0.55rem 0.95rem;
   border: 1px solid var(--ui-border);

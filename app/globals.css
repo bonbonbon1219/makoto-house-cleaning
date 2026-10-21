@@ -58,8 +58,8 @@ html[data-theme="dark"] {
 html {
   /* smooth だとブラウザの「戻る」が途中で止まり、クリック前と違う位置になる */
   scroll-behavior: auto;
-  overflow-x: clip;
   max-width: 100%;
+  overscroll-behavior-x: none;
 }
 
 [id] {
@@ -68,6 +68,7 @@ html {
 
 body {
   margin: 0;
+  max-width: 100%;
   color: var(--ink);
   background: var(--paper);
   font-family:
@@ -88,6 +89,11 @@ body {
 @media (max-width: 979px) {
   :root {
     --mobile-dock-h: calc(4.2rem + env(safe-area-inset-bottom));
+  }
+
+  body {
+    /* ヘッダーを固定した分、本文が隠れないようにする */
+    padding-top: var(--header-h);
   }
 }
 
