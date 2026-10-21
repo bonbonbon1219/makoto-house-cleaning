@@ -3,6 +3,7 @@ import Script from "next/script";
 import { Outfit } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { AnchorScroll } from "@/components/AnchorScroll";
 import { BackToTop } from "@/components/BackToTop";
 import { MobileDock } from "@/components/MobileDock";
 import { site } from "@/lib/site";
@@ -80,6 +81,7 @@ export default function RootLayout({
           本文へスキップ
         </a>
         <div id="top" tabIndex={-1} />
+        <AnchorScroll />
         <Header />
         <main id="main">{children}</main>
         <Footer />
