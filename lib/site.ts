@@ -200,7 +200,6 @@ export const estimateRules = {
   wallAcFirst: 8800,
   wallAcExtra: 7000,
   setDiscountTwo: 2000,
-  setDiscountThreePlus: 5000,
 } as const;
 
 export function calcWallAcTotal(qty: number) {
@@ -211,7 +210,6 @@ export function calcWallAcTotal(qty: number) {
 export function calcSetDiscount(totalSets: number, hasNonWallAc: boolean) {
   // 壁掛けエアコンのみの場合は台割（8,800/7,000）を適用済みのためセット割なし
   if (!hasNonWallAc) return 0;
-  if (totalSets >= 3) return estimateRules.setDiscountThreePlus;
   if (totalSets >= 2) return estimateRules.setDiscountTwo;
   return 0;
 }

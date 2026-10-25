@@ -132,10 +132,8 @@ export function Estimate() {
     const total = Math.max(0, subtotal - discount);
 
     let discountLabel = "";
-    if (discount === estimateRules.setDiscountThreePlus) {
-      discountLabel = `3件以上で${yen(estimateRules.setDiscountThreePlus)}引き`;
-    } else if (discount === estimateRules.setDiscountTwo) {
-      discountLabel = `2件で${yen(estimateRules.setDiscountTwo)}引き`;
+    if (discount === estimateRules.setDiscountTwo) {
+      discountLabel = `2件以上で${yen(estimateRules.setDiscountTwo)}引き`;
     } else if (wallAcQty >= 2 && otherQty === 0) {
       discountLabel = "2台目から7,000円で計算しています";
     }
@@ -215,7 +213,7 @@ export function Estimate() {
           <p className="section-kicker">Estimate</p>
           <h2 className="section-title">エアコン・ハウスクリーニングのかんたん自動見積</h2>
           <p className="section-lead">
-            壁掛けエアコンは1台8,800円、2台目から7,000円です。壁掛け以外と組み合わせると、2件で2,000円引き、3件で5,000円引きです。キッチン全体にはレンジフード・換気扇分解洗浄が含まれます。
+            壁掛けエアコンは1台8,800円、2台目から7,000円です。壁掛け以外と組み合わせると、2件以上で2,000円引きです。キッチン全体にはレンジフード・換気扇分解洗浄が含まれます。
           </p>
         </div>
 
