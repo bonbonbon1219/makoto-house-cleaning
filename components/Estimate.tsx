@@ -18,7 +18,7 @@ function yen(value: number) {
 
 function initialQty(): QtyState {
   return Object.fromEntries(
-    estimateItems.map((item) => [item.id, item.id === "wall-ac" ? 1 : 0]),
+    estimateItems.map((item) => [item.id, 0]),
   );
 }
 
