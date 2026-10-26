@@ -17,6 +17,12 @@ const links = [
   { href: "/#estimate", label: "自動見積", icon: "estimate" as const },
   { href: "/booking", label: "予約", icon: "booking" as const },
   { href: "/#contact", label: "お問い合わせ", icon: "contact" as const },
+  {
+    href: "/business",
+    label: "不動産管理会社・オーナー様",
+    lines: ["不動産管理会社", "オーナー様"],
+    icon: "owner" as const,
+  },
 ];
 
 export function Header() {
@@ -72,7 +78,15 @@ export function Header() {
               <span className={styles.iconWrap} aria-hidden="true">
                 <NavIcon name={link.icon} />
               </span>
-              <span className={styles.navLabel}>{link.label}</span>
+              <span className={`${styles.navLabel} ${link.lines ? styles.navLabelStack : ""}`}>
+                {link.lines
+                  ? link.lines.map((line) => (
+                      <span key={line} className={styles.navLabelLine}>
+                        {line}
+                      </span>
+                    ))
+                  : link.label}
+              </span>
             </Link>
           ))}
         </nav>
@@ -233,6 +247,24 @@ function NavIcon({ name }: { name: (typeof links)[number]["icon"] }) {
             strokeLinejoin="round"
           />
           <path d="M8 11h8M8 14h5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      );
+    case "owner":
+      return (
+        <svg viewBox="0 0 24 24" className={styles.icon}>
+          <path
+            d="M4 20.5h16M6.5 20.5V8.5h6.5v12M13 20.5V4.5h5.5V20.5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M8.5 11.5h2.5M8.5 14.5h2.5M15.2 8h1.6M15.2 11.5h1.6M15.2 15h1.6"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
         </svg>
       );
   }

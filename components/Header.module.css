@@ -123,6 +123,20 @@
   white-space: nowrap;
 }
 
+.navLabelStack {
+  display: grid;
+  width: 5.5rem;
+  white-space: normal;
+  text-align: center;
+  font-size: 0.64rem;
+  letter-spacing: 0.01em;
+  line-height: 1.15;
+}
+
+.navLabelLine {
+  display: block;
+}
+
 .navLink:hover {
   color: var(--teal-deep);
 }
@@ -365,8 +379,13 @@
   }
 
   .navLink {
-    min-width: 4.05rem;
-    padding-inline: 0.35rem;
+    min-width: 3.55rem;
+    padding-inline: 0.22rem;
+  }
+
+  .navLabel {
+    font-size: 0.66rem;
+    letter-spacing: 0.02em;
   }
 
   .actions {
@@ -379,13 +398,14 @@
   }
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 1200px) {
   .navLink {
-    min-width: 5.1rem;
-    padding-inline: 0.7rem;
+    min-width: 4.4rem;
+    padding-inline: 0.4rem;
   }
 
   .navLabel {
-    font-size: 0.76rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
   }
 }
