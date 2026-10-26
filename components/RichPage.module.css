@@ -67,6 +67,32 @@
   font-size: 0.86rem;
 }
 
+.figure {
+  margin: 1.35rem 0 0;
+}
+
+.frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--fog);
+}
+
+.frameTall {
+  aspect-ratio: 4 / 3;
+}
+
+.photo {
+  object-fit: cover;
+}
+
+.caption {
+  margin: 0.4rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+}
+
 .points {
   display: flex;
   flex-wrap: wrap;
@@ -185,9 +211,25 @@
   list-style: none;
 }
 
+.flow {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.flow .figure,
+.flow .steps {
+  margin-top: 0;
+}
+
 @media (min-width: 800px) {
   .cards {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .flow {
+    grid-template-columns: 1.15fr 0.85fr;
+    align-items: start;
   }
 }
 

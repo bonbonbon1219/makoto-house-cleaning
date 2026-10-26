@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BreadcrumbJsonLd } from "@/components/BreadcrumbJsonLd";
+import { OptimizedImage } from "@/components/OptimizedImage";
 import { areaServiceLinks } from "@/lib/seoContent";
 import { site } from "@/lib/site";
 import styles from "./RichPage.module.css";
@@ -208,6 +209,19 @@ export function FukuokaArea() {
             </div>
             <p className={styles.phoneNote}>{site.phoneNote}</p>
             <p className={styles.updated}>最終更新日：{updatedAt}</p>
+            <figure className={styles.figure}>
+              <div className={styles.frame}>
+                <OptimizedImage
+                  src="/areas/fukuoka-living.webp"
+                  alt="白い壁掛けエアコンのある、明るいリビング（イメージ）"
+                  fill
+                  eager
+                  sizes="(max-width: 1180px) 100vw, 1180px"
+                  className={styles.photo}
+                />
+              </div>
+              <figcaption className={styles.caption}>イメージ</figcaption>
+            </figure>
           </header>
 
           <section className={styles.section} aria-labelledby="request-title">
@@ -239,6 +253,18 @@ export function FukuokaArea() {
             <p className={styles.intro}>
               水回りも、同じ訪問で受けられます。室外機洗浄や防カビのコートは、メニューにしていません。汚れや機種で金額が変わるときは、作業前に説明します。
             </p>
+            <figure className={styles.figure}>
+              <div className={styles.frame}>
+                <OptimizedImage
+                  src="/areas/fukuoka-hood.webp"
+                  alt="深緑のキッチンと、コンロ上のレンジフード（イメージ）"
+                  fill
+                  sizes="(max-width: 1180px) 100vw, 1180px"
+                  className={styles.photo}
+                />
+              </div>
+              <figcaption className={styles.caption}>イメージ</figcaption>
+            </figure>
             <div className={styles.cards}>
               {prices.map((item) => (
                 <section key={item.title} className={styles.card}>
@@ -261,11 +287,25 @@ export function FukuokaArea() {
             <p className={styles.intro}>
               壁掛け1台でおよそ60〜90分、お掃除機能付きはそれより長くなります。
             </p>
-            <ol className={styles.steps}>
-              {steps.map((step) => (
-                <li key={step}>{step}</li>
-              ))}
-            </ol>
+            <div className={styles.flow}>
+              <ol className={styles.steps}>
+                {steps.map((step) => (
+                  <li key={step}>{step}</li>
+                ))}
+              </ol>
+              <figure className={styles.figure}>
+                <div className={`${styles.frame} ${styles.frameTall}`}>
+                  <OptimizedImage
+                    src="/areas/fukuoka-care.webp"
+                    alt="壁掛けエアコンのある和室（イメージ）"
+                    fill
+                    sizes="(max-width: 800px) 100vw, 480px"
+                    className={styles.photo}
+                  />
+                </div>
+                <figcaption className={styles.caption}>イメージ</figcaption>
+              </figure>
+            </div>
           </section>
 
           <section className={styles.section} aria-labelledby="booking-title">
