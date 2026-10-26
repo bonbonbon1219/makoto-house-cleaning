@@ -26,7 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const areaEntries = areaPages.map((page) => ({
     url: `${base}/areas/${page.slug}`,
-    lastModified,
+    lastModified: page.slug === "fukuoka" ? new Date("2026-10-26") : lastModified,
     changeFrequency: "monthly" as const,
     priority: 0.85,
   }));

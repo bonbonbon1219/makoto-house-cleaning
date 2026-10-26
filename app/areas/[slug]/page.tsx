@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { FukuokaArea } from "@/components/FukuokaArea";
 import { SeoArticle } from "@/components/SeoArticle";
 import { areaPages, getAreaPage } from "@/lib/seoContent";
 
@@ -30,6 +31,8 @@ export default async function AreaDetailPage({ params }: Props) {
   const { slug } = await params;
   const page = getAreaPage(slug);
   if (!page) notFound();
+
+  if (slug === "fukuoka") return <FukuokaArea />;
 
   return <SeoArticle page={page} parent={{ href: "/areas", label: "対応エリア" }} />;
 }
