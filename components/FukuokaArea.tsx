@@ -2,7 +2,7 @@ import Link from "next/link";
 import { BreadcrumbJsonLd } from "@/components/BreadcrumbJsonLd";
 import { areaServiceLinks } from "@/lib/seoContent";
 import { site } from "@/lib/site";
-import styles from "./FukuokaArea.module.css";
+import styles from "./RichPage.module.css";
 
 const title = "福岡市のエアコン・ハウスクリーニング";
 const updatedAt = "2026年10月26日";

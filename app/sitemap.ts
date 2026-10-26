@@ -5,11 +5,12 @@ const base = "https://makoto-hk.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date("2026-10-20");
+  const refreshed = new Date("2026-10-26");
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: `${base}/`, lastModified, changeFrequency: "weekly", priority: 1 },
-    { url: `${base}/services`, lastModified, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${base}/areas`, lastModified, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/services`, lastModified: refreshed, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/areas`, lastModified: refreshed, changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/booking`, lastModified, changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/business`, lastModified, changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/about`, lastModified, changeFrequency: "monthly", priority: 0.7 },
@@ -19,14 +20,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const serviceEntries = servicePages.map((page) => ({
     url: `${base}/services/${page.slug}`,
-    lastModified,
+    lastModified: refreshed,
     changeFrequency: "monthly" as const,
     priority: 0.85,
   }));
 
   const areaEntries = areaPages.map((page) => ({
     url: `${base}/areas/${page.slug}`,
-    lastModified: page.slug === "fukuoka" ? new Date("2026-10-26") : lastModified,
+    lastModified: refreshed,
     changeFrequency: "monthly" as const,
     priority: 0.85,
   }));

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { FukuokaArea } from "@/components/FukuokaArea";
-import { SeoArticle } from "@/components/SeoArticle";
-import { areaPages, getAreaPage } from "@/lib/seoContent";
+import { RichPage } from "@/components/RichPage";
+import { areaPages, areaSlugByName, getAreaPage } from "@/lib/seoContent";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -34,5 +34,6 @@ export default async function AreaDetailPage({ params }: Props) {
 
   if (slug === "fukuoka") return <FukuokaArea />;
 
-  return <SeoArticle page={page} parent={{ href: "/areas", label: "対応エリア" }} />;
+  const city = Object.entries(areaSlugByName).find(([, value]) => value === slug)?.[0];
+  return <RichPage page={page} parent={{ href: "/areas", label: "対応エリア" }} kicker={city ? `${city}対応` : "対応エリア"} />;
 }

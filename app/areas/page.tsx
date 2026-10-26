@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { LegalPage } from "@/components/LegalPage";
-import { BreadcrumbJsonLd } from "@/components/BreadcrumbJsonLd";
+import { RichLayout } from "@/components/RichPage";
+import styles from "@/components/RichPage.module.css";
 import { areaPages } from "@/lib/seoContent";
 import { site } from "@/lib/site";
 
@@ -11,61 +11,46 @@ export const metadata: Metadata = {
   alternates: { canonical: "/areas" },
 };
 
+const services = [
+  { href: "/services/aircon-cleaning", label: "エアコンクリーニング" },
+  { href: "/services/range-hood", label: "レンジフード・換気扇分解洗浄" },
+  { href: "/services/house-cleaning", label: "ハウスクリーニング一式" },
+  { href: "/business", label: "退去後清掃・空室クリーニング" },
+] as const;
+
 export default function AreasIndexPage() {
   return (
-    <>
-      <BreadcrumbJsonLd
-        items={[
-          { name: "ホーム", path: "/" },
-          { name: "対応エリア" },
-        ]}
-      />
-      <LegalPage
-        title="対応エリア"
-        description={`${site.brandJa}は、${site.areas.join("・")}を中心に伺います。エリア外もご相談ください。`}
-        updatedAt={site.legal.updatedAt}
-        crumbs={[
-          { href: "/", label: "ホーム" },
-          { label: "対応エリア" },
-        ]}
-      >
-        <h2>市区町村別のご案内</h2>
-        <ul>
+    <RichLayout
+      kicker="対応エリア"
+      title="対応エリア"
+      lead={`${site.brandJa}は、${site.areas.join("・")}を中心に伺います。エリア外もご相談ください。`}
+      crumbs={[
+        { href: "/", label: "ホーム" },
+        { label: "対応エリア" },
+      ]}
+    >
+      <section className={styles.section} aria-labelledby="city-title">
+        <h2 id="city-title">市区町村別のご案内</h2>
+        <div className={styles.cards}>
           {areaPages.map((page) => (
-            <li key={page.slug}>
-              <Link href={`/areas/${page.slug}`}>{page.h1}</Link>
+            <Link key={page.slug} href={`/areas/${page.slug}`} className={`${styles.card} ${styles.cardLink}`}>
+              <h3>{page.h1}</h3>
+              <p>{page.description}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.section} aria-labelledby="service-title">
+        <h2 id="service-title">サービス詳細</h2>
+        <ul className={styles.menus}>
+          {services.map((item) => (
+            <li key={item.href}>
+              <Link href={item.href}>{item.label}</Link>
             </li>
           ))}
         </ul>
-
-        <h2>サービス詳細</h2>
-        <ul>
-          <li>
-            <Link href="/services/aircon-cleaning">エアコンクリーニング</Link>
-          </li>
-          <li>
-            <Link href="/services/range-hood">レンジフード・換気扇分解洗浄</Link>
-          </li>
-          <li>
-            <Link href="/services/house-cleaning">ハウスクリーニング一式</Link>
-          </li>
-          <li>
-            <Link href="/business">退去後清掃・空室クリーニング</Link>
-          </li>
-          <li>
-            <Link href="/services">ハウスクリーニングのサービス一覧</Link>
-          </li>
-        </ul>
-
-        <h2>予約・お問い合わせ</h2>
-        <p>
-          希望日の空きは
-          <Link href="/booking">オンライン予約</Link>
-          で確認できます。内容の相談は
-          <Link href="/#contact">お問い合わせ</Link>
-          またはお電話（{site.phone}）までご連絡ください。
-        </p>
-      </LegalPage>
-    </>
+      </section>
+    </RichLayout>
   );
 }

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { SeoArticle } from "@/components/SeoArticle";
+import { RichPage } from "@/components/RichPage";
 import { getServicePage, servicePages } from "@/lib/seoContent";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -31,5 +31,5 @@ export default async function ServiceDetailPage({ params }: Props) {
   const page = getServicePage(slug);
   if (!page) notFound();
 
-  return <SeoArticle page={page} parent={{ href: "/services", label: "サービス一覧" }} />;
+  return <RichPage page={page} parent={{ href: "/services", label: "サービス一覧" }} kicker="サービス" />;
 }
